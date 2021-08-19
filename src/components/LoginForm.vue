@@ -27,12 +27,13 @@
 
 <script>
 export default {
-  name: 'Login',
+  name: 'LoginForm',
   methods: {
     onSubmit() {
       const userData = this.users.find(user => user.name === this.name && user.password === this.password)
       if (userData) {
-        this.$emit('login-sumbitted', userData)
+        this.$store.commit('login', userData)
+        this.$router.push('products');
       } else {
         this.error = 'Wrong credentials'
       }
@@ -44,7 +45,8 @@ export default {
       password: '',
       error: '',
       users: [
-        {id: 1, name: 'test', password: 'test'}
+        {id: 1, name: 'test', password: 'test', role: 'ADMIN'},
+        {id: 2, name: 'test2', password: 'test2', role: 'USER'}
       ]
     }
   },

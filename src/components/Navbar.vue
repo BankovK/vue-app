@@ -1,6 +1,9 @@
 <template>
   <div class="navbar">
-    <div v-if="cartCount" class="navbar-element cart" @click="toggleCart">Cart: {{cartCount}}</div>
+    <div v-if="cartCount" :class="{active: isCartOpen}" class="navbar-element cart" @click="toggleCart">Cart: {{cartCount}}</div>
+    <router-link to="products" class="navbar-element">Products</router-link>
+    <router-link v-if="isUserAdmin" to="new-product" class="navbar-element">Add product</router-link>
+    <router-link v-if="isUserAdmin" to="orders" class="navbar-element">Orders</router-link>
     <div class="navbar-element logout-button" @click="logout">LogOut</div>
   </div>
 </template>
@@ -8,17 +11,25 @@
 <script>
 export default {
   name: 'Navbar',
-  props: {
-    cartCount: Number
-  },
   methods: {
     logout() {
-      this.$emit('logout')
+      this.$store.commit('logout')
     },
     toggleCart() {
-      this.$emit('toggle-cart')
+      this.$store.commit('toggleShowCart')
     }
   },
+  computed: {
+    cartCount: function() {
+      return this.$store.state.cart.length
+    },
+    isUserAdmin: function() {
+      return this.$store.state.currentUser.role === 'ADMIN'
+    },
+    isCartOpen: function() {
+      return this.$store.state.showCart
+    },
+  }
 }
 </script>
 
@@ -45,13 +56,17 @@ export default {
   margin-left: 10px;
 }
 
+.navbar-element.router-link-active {
+  background-color: burlywood;
+}
+
 .cart {
   user-select: none;
   background-color: black;
    color: white;
 }
 
-.cart:active,
+.cart.active,
 .cart:hover {
   background-color: greenyellow;
   color: black;

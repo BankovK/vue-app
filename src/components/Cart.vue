@@ -8,15 +8,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="product in contents" :key="product.id">
-          <td>{{product.name}} <button @click="removeFromCart(product.id)">X</button></td>
+        <tr v-for="(product, index) in contents" :key="index">
+          <td>{{product.name}} <button @click="removeFromCart(index)">X</button></td>
           <td>{{product.price | formatCurrency}}</td>
         </tr>
       </tbody>
     </table>
     <div class="total-price">
       <div>Total: {{totalPrice | formatCurrency}}</div>
-      <div>
+      <div @click="order">
         <span class="order-button">
           Order
         </span>
@@ -28,20 +28,24 @@
 <script>
 export default {
   name: 'Cart',
-  props: {
-    show: Boolean,
-    contents: Array
-  },
   methods: {
-    removeFromCart(id) {
-      console.log(id)
-      this.$emit('remove-form-cart', id)
+    removeFromCart(index) {
+      this.$store.commit('removeFromCart', index)
+    },
+    order() {
+      this.$store.commit('makeOrder', this.contents)
     }
   },
   computed: {
+    show: function() {
+      return this.$store.state.showCart
+    },
+    contents: function() {
+      return this.$store.state.cart
+    },
     totalPrice: function() {
       return this.contents.reduce((sum, product) => sum + +product.price, 0)
-    }
+    },
   },
   filters: {
     formatCurrency: function(value) {

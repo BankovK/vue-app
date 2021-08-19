@@ -1,21 +1,20 @@
 <template>
   <div id="app">
-    <div v-if="!currentUser">
-      <Login @login-sumbitted="onLogin" />
+    <div v-if="notLoggedIn">
+      <Login />
     </div>
     <div v-else>
-      <Navbar :cartCount="cart.length" @logout="onLogout" @toggle-cart="onToggleCart"/>
-      <Cart :show="showCart" :contents="cart" @remove-form-cart="onRemoveFromCart"/>
-      <Products @add-product-to-cart="onAddToCart" />
+      <Navbar />
+      <Cart />
+      <router-view/>
     </div>
   </div>
 </template>
 
 <script>
-import Login from './components/Login.vue'
-import Navbar from './components/Navbar.vue'
+import Login from './views/Login.vue'
 import Cart from './components/Cart.vue'
-import Products from './components/Products.vue'
+import Navbar from './components/Navbar.vue'
 
 export default {
   name: 'App',
@@ -23,33 +22,10 @@ export default {
     Login,
     Cart,
     Navbar,
-    Products
   },
-  methods: {
-    onLogin(user) {
-      this.currentUser = user
-    },
-    onLogout() {
-      this.currentUser = null
-    },
-    onAddToCart(product) {
-      this.cart.push(product)
-    },
-    onRemoveFromCart(id) {
-      this.cart = this.cart.filter(product => product.id !== id)
-      if (this.cart.length === 0) {
-        this.showCart = false
-      }
-    },
-    onToggleCart() {
-      this.showCart = !this.showCart
-    }
-  },
-  data() {
-    return {
-      currentUser: null,
-      cart: [],
-      showCart: false
+  computed: {
+    notLoggedIn: function() {
+      return !this.$store.state.currentUser
     }
   }
 }
