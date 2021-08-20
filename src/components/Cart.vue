@@ -18,7 +18,7 @@
       <div>Total: {{totalPrice | formatCurrency}}</div>
       <div @click="order">
         <span class="order-button">
-          Order
+          {{!!this.$route.query['order-id'] ? 'Submit Changes' : "Order"}}
         </span>
       </div>
     </div>
@@ -26,6 +26,9 @@
 </template>
 
 <script>
+import moment from 'moment';
+import axios from 'axios'
+
 export default {
   name: 'Cart',
   methods: {
@@ -33,7 +36,25 @@ export default {
       this.$store.commit('removeFromCart', index)
     },
     order() {
-      this.$store.commit('makeOrder', this.contents)
+      const orderId = this.$route.query['order-id']
+      const orderData = {
+        products: [...this.contents],
+        userId: this.currentUserId,
+        totalPrice: this.contents.reduce((sum, product) => sum + +product.price, 0)
+      }
+      if (orderId) {
+        axios.patch(`http://localhost:5000/orders/${orderId}`, orderData)
+          .then(({data}) => {
+            this.$store.commit('editOrder', data)
+            this.$router.push('/products');
+          })
+      } else {
+        axios.post("http://localhost:5000/orders", {
+          ...orderData,
+          orderTime: moment().toISOString()
+        })
+          .then(({data}) => this.$store.commit('makeOrder', data))
+      }
     }
   },
   computed: {
@@ -46,12 +67,15 @@ export default {
     totalPrice: function() {
       return this.contents.reduce((sum, product) => sum + +product.price, 0)
     },
+    currentUserId: function() {
+      return this.$store.state.currentUser.id
+    }
   },
   filters: {
     formatCurrency: function(value) {
       return `${value}$`
     }
-  },
+  }
 }
 </script>
 

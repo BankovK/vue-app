@@ -1,23 +1,43 @@
-import moment from 'moment'
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from 'axios'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
     currentUser: null,
-    products: [
-      {id: 1, name: 'Product1', price: '87', imageUrl: 'https://blogs.uoregon.edu/natewoodburyaad250/files/2012/10/PSD_Food_illustrations_3190_pancakes_with_butter-1wi1tz5.jpg'},
-      {id: 2, name: 'Product2', price: '87', imageUrl: 'https://blogs.uoregon.edu/natewoodburyaad250/files/2012/10/PSD_Food_illustrations_3190_pancakes_with_butter-1wi1tz5.jpg'},
-      {id: 3, name: 'Product3', price: '87', imageUrl: 'https://blogs.uoregon.edu/natewoodburyaad250/files/2012/10/PSD_Food_illustrations_3190_pancakes_with_butter-1wi1tz5.jpg'},
-      {id: 4, name: 'Product4', price: '87', imageUrl: 'https://blogs.uoregon.edu/natewoodburyaad250/files/2012/10/PSD_Food_illustrations_3190_pancakes_with_butter-1wi1tz5.jpg'},
-      {id: 5, name: 'Product5', price: '87', imageUrl: 'https://blogs.uoregon.edu/natewoodburyaad250/files/2012/10/PSD_Food_illustrations_3190_pancakes_with_butter-1wi1tz5.jpg'},
-      {id: 6, name: 'Product6', price: '87', imageUrl: 'https://blogs.uoregon.edu/natewoodburyaad250/files/2012/10/PSD_Food_illustrations_3190_pancakes_with_butter-1wi1tz5.jpg'}
-    ],
-    orders: [],
+    products: {
+      data: [],
+      wasRequested: false
+    },
+    orders: {
+      data: [],
+      wasRequested: false
+    },
     cart: [],
     showCart: false
+  },
+  actions: {
+    fetchProducts: ({ commit }) => {
+      async function fetchProducts() {
+        const { data } = await axios.get("http://localhost:5000/products")
+        commit('setProducts', data)
+      }
+      fetchProducts()
+    },
+    fetchOrders: ({ commit }, payload) => {
+      async function fetchProducts() {
+        const userId = payload
+        const { data } = await axios.get("http://localhost:5000/orders", {
+          params: {
+            userId
+          }
+        })
+        commit('setOrders', data)
+      }
+      fetchProducts()
+    }
   },
   mutations: {
     login: (state, user) => {
@@ -26,12 +46,25 @@ const store = new Vuex.Store({
     logout: (state) => {
       state.currentUser = null
     },
+    setProducts: (state, products) => {
+      state.products = {
+        data: products,
+        wasRequested: true
+      }
+    },
     addProduct: (state, product) => {
-      state.products.push({
-        id: state.products.length + 1,
-        imageUrl: 'https://blogs.uoregon.edu/natewoodburyaad250/files/2012/10/PSD_Food_illustrations_3190_pancakes_with_butter-1wi1tz5.jpg',
-        ...product
-      })
+      state.products.data.push(product)
+    },
+    updateProduct: (state, product) => {
+      const allProducts = [...state.products.data]
+      allProducts[allProducts.findIndex(_product => _product.id === product.id)] = product
+      state.products.data = allProducts
+    },
+    deleteProduct: (state, id) => {
+      state.products.data = state.products.data.filter(product => product.id !== id)
+    },
+    setCart: (state, products) => {
+      state.cart = [...products]
     },
     addToCart: (state, product) => {
       state.cart.push(product)
@@ -42,15 +75,26 @@ const store = new Vuex.Store({
         state.showCart = false
       }
     },
-    makeOrder: (state) => {
-      state.orders.push({
-        id: state.orders.length + 1,
-        products: [...state.cart],
-        totalPrice: state.cart.reduce((sum, product) => sum + +product.price, 0),
-        orderTime: moment().toISOString()
-      })
+    setOrders: (state, orders) => {
+      state.orders = {
+        data: [...orders],
+        wasRequested: true
+      }
+    },
+    makeOrder: (state, order) => {
+      state.orders.data.push(order)
       state.cart = []
       state.showCart = false
+    },
+    editOrder: (state, order) => {
+      const allOrders = [...state.orders.data]
+      allOrders[allOrders.findIndex(_order => _order.id === order.id)] = order
+      state.orders.data = allOrders
+      state.cart = []
+      state.showCart = false
+    },
+    deleteOrder: (state, id) => {
+      state.orders.data = state.orders.data.filter(order => order.id !== id)
     },
     toggleShowCart: (state) => {
       state.showCart = !state.showCart

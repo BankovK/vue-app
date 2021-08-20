@@ -21,7 +21,7 @@ export default {
   },
   computed: {
     products: function() {
-      return this.$store.state.products
+      return this.$store.state.products.data
     }
   },
   filters: {
@@ -46,7 +46,7 @@ export default {
   justify-content: flex-start;
 }
 .product-card {
-  width: calc(25% - 28px);
+  width: calc(25% - 20px);
   border: 4px solid black;
   border-radius: 100px;
   margin: 10px;
@@ -59,12 +59,12 @@ export default {
 .product-card__order-button {
   background-color: black;
   padding: 10px;
-  border-radius: 100px;
-  font-size: 14px;
+  font-size: 40px;
   color: white;
   text-decoration: none;
   text-align: center;
   border: 0;
+  width: 100%;
 }
 .product-card__order-button:active,
 .product-card__order-button:hover {

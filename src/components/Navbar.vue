@@ -1,9 +1,10 @@
 <template>
   <div class="navbar">
-    <div v-if="cartCount" :class="{active: isCartOpen}" class="navbar-element cart" @click="toggleCart">Cart: {{cartCount}}</div>
-    <router-link to="products" class="navbar-element">Products</router-link>
-    <router-link v-if="isUserAdmin" to="new-product" class="navbar-element">Add product</router-link>
-    <router-link v-if="isUserAdmin" to="orders" class="navbar-element">Orders</router-link>
+    <div v-if="cartCount" :class="{active: isCartOpen}" class="navbar-element cart" @click="toggleCart">{{!!this.$route.query['order-id'] ? 'Order Products:' : "Cart:"}} {{cartCount}}</div>
+    <router-link to="/products" class="navbar-element">Products</router-link>
+    <router-link v-if="isUserAdmin" to="/product/new" class="navbar-element">Add product</router-link>
+    <router-link v-if="isUserAdmin" to="/products-admin" class="navbar-element">Products Admin</router-link>
+    <router-link to="/orders" class="navbar-element">Orders</router-link>
     <div class="navbar-element logout-button" @click="logout">LogOut</div>
   </div>
 </template>

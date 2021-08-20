@@ -26,13 +26,21 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'LoginForm',
   methods: {
+    ...mapActions([
+      'fetchProducts'
+    ]),
     onSubmit() {
       const userData = this.users.find(user => user.name === this.name && user.password === this.password)
       if (userData) {
         this.$store.commit('login', userData)
+        if(!this.$store.state.products.wasRequested) {
+            this.fetchProducts()
+        }
         this.$router.push('products');
       } else {
         this.error = 'Wrong credentials'

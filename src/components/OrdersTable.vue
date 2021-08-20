@@ -6,6 +6,7 @@
           <th>Products</th>
           <th>Order Time</th>
           <th>Total Price</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -13,6 +14,10 @@
           <td><div v-for="product in order.products" :key="product.id">{{product.name}}</div></td>
           <td>{{order.orderTime | formatDateTime}}</td>
           <td>{{order.totalPrice | formatCurrency}}</td>
+          <td>
+            <button class="order-table__action-button" @click="editOrder(order.id)">Edit</button>
+            <button class="order-table__action-button" @click="deleteOrder(order.id)">Delete</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -20,13 +25,34 @@
 </template>
 
 <script>
-import moment from "moment";
+import moment from 'moment';
+import axios from 'axios'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'ProductsList',
+  methods: {
+    ...mapActions([
+      'fetchOrders'
+    ]),
+    deleteOrder(id) {
+      axios.delete(`http://localhost:5000/orders/${id}`)
+        .then(() => this.$store.commit('deleteOrder', id))
+    },
+    editOrder(id) {
+      axios.get(`http://localhost:5000/orders/${id}`)
+        .then(({data}) => {
+          this.$store.commit('setCart', data.products)
+          this.$router.push(`products?order-id=${id}`);
+        })
+    },
+  },
   computed: {
     orders: function() {
-      return this.$store.state.orders
+      return this.$store.state.orders.data
+    },
+    currentUser: function() {
+      return this.$store.state.currentUser
     }
   },
   filters: {
@@ -37,17 +63,14 @@ export default {
       return moment(value).format('YYYY-MM-DD HH:mm')
     }
   },
+  created() {
+    this.fetchOrders(this.currentUser.role !== 'ADMIN' ? this.currentUser.id : undefined)
+  },
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.page-wrapper {
-  padding-top: 60px;
-  font-size: 50px;
-  display: flex;
-  justify-content: center;
-}
 .order-table-wrapper {
   padding-top: 80px;
   width: 80%;
@@ -86,5 +109,9 @@ export default {
 .order-table {
   width: 100%;
   font-size: 32px;
+}
+
+.order-table__action-button {
+  border-radius: 100px;
 }
 </style>
