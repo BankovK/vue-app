@@ -2,7 +2,8 @@
   <div class="form-wrapper">
     <div>
       <h1>{{this.isEdit ? 'Edit Product' : 'Create Product'}}</h1>
-      <form @submit.prevent="onSubmit">
+      <div v-if="loading">Loading...</div>
+      <form @submit.prevent="onSubmit" v-else>
         <div>
           <label htmlFor="product-name">Name</label>
           <input
@@ -18,6 +19,14 @@
             v-model="price"
             id="product-price"
             type="number"
+          />
+        </div>
+        <div>
+          <label htmlFor="description">Description</label>
+          <textarea
+            v-model="description"
+            id="description"
+            type="text"
           />
         </div>
         <div v-if="error">{{error}}</div>
@@ -38,6 +47,7 @@ export default {
         const productData = {
           name: this.name,
           price: this.price,
+          description: this.description,
           imageUrl: 'https://blogs.uoregon.edu/natewoodburyaad250/files/2012/10/PSD_Food_illustrations_3190_pancakes_with_butter-1wi1tz5.jpg'
         }
         if(!this.isEdit) {
@@ -63,7 +73,9 @@ export default {
       name: '',
       price: '',
       error: '',
-      productId: null
+      description: '',
+      productId: null,
+      loading: false
     }
   },
   computed: {
@@ -77,10 +89,12 @@ export default {
   mounted() {
     this.productId = this.$route.params.id
     if (this.productId !== 'new') {
+      this.loading = true
       axios.get(`http://localhost:5000/products/${this.productId}`)
         .then(({data}) => {
           this.name = data.name
           this.price = data.price
+          this.loading = false
         })
     }
   }
@@ -94,6 +108,16 @@ export default {
   font-size: 50px;
   display: flex;
   justify-content: center;
+}
+
+textarea {
+  border-radius: 4px;
+  border: solid 1px black;
+  min-height: 110px;
+  color: black;
+  width: 100%;
+  resize: none;
+  font-size: 15px;
 }
 
 .form-wrapper h1 {

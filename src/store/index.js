@@ -19,6 +19,17 @@ const store = new Vuex.Store({
     showCart: false
   },
   actions: {
+    increaseQuantity: ({ commit }, payload) => {
+      commit('increaseQuantity', payload)
+    },
+    decreaseQuantity: ({ commit, state }, payload) => {
+      const changedItem = state.cart[payload]
+      if (changedItem.quantity > 1) {
+        commit('decreaseQuantity', payload)
+      } else {
+        commit('removeFromCart', payload)
+      }
+    },
     fetchProducts: ({ commit }) => {
       async function fetchProducts() {
         const { data } = await axios.get("http://localhost:5000/products")
@@ -67,7 +78,17 @@ const store = new Vuex.Store({
       state.cart = [...products]
     },
     addToCart: (state, product) => {
-      state.cart.push(product)
+      state.cart.push({...product, quantity: 1})
+    },
+    increaseQuantity: (state, index) => {
+      const cart = [...state.cart]
+      cart[index].quantity++
+      state.cart = cart
+    },
+    decreaseQuantity: (state, index) => {
+      const cart = [...state.cart]
+      cart[index].quantity--
+      state.cart = cart
     },
     removeFromCart: (state, index) => {
       state.cart.splice(index, 1);

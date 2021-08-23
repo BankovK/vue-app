@@ -1,16 +1,32 @@
 <template>
   <div>
-    <OrdersTable />
+    <OrdersTable @open-review-form="openReviewForm"/>
+    <ReviewForm :productId="reviewProductId" @close-review-form="closeReviewForm"/>
   </div>
 </template>
 
 <script>
 import OrdersTable from '../components/OrdersTable.vue'
+import ReviewForm from '../components/ReviewForm.vue'
 
 export default {
   name: 'Orders',
-  components: {
-    OrdersTable
+  data() {
+    return {
+      reviewProductId: null,
+    }
   },
+  components: {
+    OrdersTable,
+    ReviewForm
+  },
+  methods: {
+    openReviewForm(value) {
+      this.reviewProductId = value
+    },
+    closeReviewForm() {
+      this.reviewProductId = null
+    }
+  }
 }
 </script>

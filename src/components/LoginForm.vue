@@ -54,7 +54,9 @@ export default {
       error: '',
       users: [
         {id: 1, name: 'test', password: 'test', role: 'ADMIN'},
-        {id: 2, name: 'test2', password: 'test2', role: 'USER'}
+        {id: 2, name: 'test2', password: 'test2', role: 'USER'},
+        {id: 3, name: 'test3', password: 'test3', role: 'DELIVERY'},
+        {id: 4, name: 'test4', password: 'test4', role: 'DELIVERY'}
       ]
     }
   },

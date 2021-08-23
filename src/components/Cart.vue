@@ -1,25 +1,49 @@
 <template>
   <div class="cart-wrapper" :class="{ hidden: !show }">
+    <input
+      v-model="orderToDate"
+      id="orderToDate"
+      type="date"
+      autoComplete="off"
+      :min="getCurrentDate()"
+      class="date-selector"
+    />
     <table class="cart-table">
       <thead>
         <tr>
           <th>Name</th>
+          <th>Amount</th>
           <th>Price</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(product, index) in contents" :key="index">
-          <td>{{product.name}} <button @click="removeFromCart(index)">X</button></td>
-          <td>{{product.price | formatCurrency}}</td>
+          <td>
+            {{product.name}}
+          </td>
+          <td>
+            <button
+              @click="decreaseQuantity(index)"
+            >
+              -
+            </button>
+            {{product.quantity}}
+            <button
+              @click="increaseQuantity(index)"
+            >
+              +
+            </button>
+          </td>
+          <td>{{product.price * product.quantity | formatCurrency}}</td>
         </tr>
       </tbody>
     </table>
     <div class="total-price">
       <div>Total: {{totalPrice | formatCurrency}}</div>
-      <div @click="order">
-        <span class="order-button">
+      <div>
+        <button class="order-button" @click="order" :class="{'order-button--disabled': !orderToDate}" :disabled="!orderToDate">
           {{!!this.$route.query['order-id'] ? 'Submit Changes' : "Order"}}
-        </span>
+        </button>
       </div>
     </div>
   </div>
@@ -27,20 +51,32 @@
 
 <script>
 import moment from 'moment';
-import axios from 'axios'
+import axios from 'axios';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'Cart',
+  data() {
+    return {
+      orderToDate: null
+    }
+  },
   methods: {
-    removeFromCart(index) {
-      this.$store.commit('removeFromCart', index)
+    ...mapActions([
+      'increaseQuantity',
+      'decreaseQuantity'
+    ]),
+    setOrderDate() {
+      this.orderToDate = this.$route.query['order-time']
     },
     order() {
       const orderId = this.$route.query['order-id']
       const orderData = {
         products: [...this.contents],
         userId: this.currentUserId,
-        totalPrice: this.contents.reduce((sum, product) => sum + +product.price, 0)
+        totalPrice: this.totalPrice,
+        orderToDate: this.orderToDate,
+        status: "1"
       }
       if (orderId) {
         axios.patch(`http://localhost:5000/orders/${orderId}`, orderData)
@@ -55,6 +91,9 @@ export default {
         })
           .then(({data}) => this.$store.commit('makeOrder', data))
       }
+    },
+    getCurrentDate() {
+      return moment().format('YYYY-MM-DD')
     }
   },
   computed: {
@@ -65,11 +104,14 @@ export default {
       return this.$store.state.cart
     },
     totalPrice: function() {
-      return this.contents.reduce((sum, product) => sum + +product.price, 0)
+      return this.contents.reduce((sum, product) => sum + (+product.price * +product.quantity), 0)
     },
     currentUserId: function() {
       return this.$store.state.currentUser.id
     }
+  },
+  watch: {
+    "$route": 'setOrderDate'
   },
   filters: {
     formatCurrency: function(value) {
@@ -94,6 +136,13 @@ export default {
   top: 74px;
   background-color: white;
   border-right: 4px solid black;
+}
+
+.date-selector {
+  width: calc(100% - 20px);
+  margin: 10px;
+  border: 1px solid gray;
+  font-size: 20px;
 }
 
 .cart-table {
@@ -127,5 +176,11 @@ export default {
   background-color: greenyellow;
   color: black;
   cursor: pointer;
+}
+.order-button--disabled {
+  background-color: red;
+}
+.order-button--disabled:hover {
+  background-color: red;
 }
 </style>

@@ -2,7 +2,7 @@
   <div class="page-wrapper">
     <div class="products-wrapper">
       <div class="product-card" v-for="product in products" :key="product.id">
-        <img class="product-card__image" :src="product.imageUrl" />
+        <img class="product-card__image" :src="product.imageUrl" @click="openDetails(product)"/>
         <div>{{product.name}}</div>
         <div>{{product.price | formatCurrency}}</div>
         <div><button class="product-card__order-button" type="button" @click="addToCart(product)">Order</button></div>
@@ -17,6 +17,9 @@ export default {
   methods: {
     addToCart(product) {
       this.$store.commit('addToCart', product)
+    },
+    openDetails(product) {
+      this.$emit('open-product-details', product)
     },
   },
   computed: {

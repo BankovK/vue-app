@@ -5,18 +5,34 @@
         <tr>
           <th>Products</th>
           <th>Order Time</th>
+          <th>Ordered To Date</th>
           <th>Total Price</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="order in orders" :key="order.id">
-          <td><div v-for="product in order.products" :key="product.id">{{product.name}}</div></td>
+          <td>
+            <span v-for="product in order.products" :key="product.id">
+              {{`${product.name} (${product.quantity})`}} 
+              <button v-if="checkIfReviewable(order)" class="order-table__action-button" @click="openReview(product.id)">Review</button>
+            </span>
+          </td>
           <td>{{order.orderTime | formatDateTime}}</td>
+          <td>{{order.orderToDate | formatDate}}</td>
           <td>{{order.totalPrice | formatCurrency}}</td>
           <td>
-            <button class="order-table__action-button" @click="editOrder(order.id)">Edit</button>
-            <button class="order-table__action-button" @click="deleteOrder(order.id)">Delete</button>
+            <div v-if="!isUserDelivery && checkIfEditable(order)">
+              <button class="order-table__action-button" @click="editOrder(order.id)">Edit</button>
+              <button class="order-table__action-button" @click="deleteOrder(order.id)">Delete</button>
+            </div>
+            <div v-if="isUserDelivery">
+              <select v-model="order.status" @change="(event) => changeStatus(event, order.id)" :disabled="!checkIfAllowedForDelivery(order)">
+                <option value='1'>To Do</option>
+                <option value='2'>In Progress</option>
+                <option value='3'>Delivered</option>
+              </select>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -43,9 +59,28 @@ export default {
       axios.get(`http://localhost:5000/orders/${id}`)
         .then(({data}) => {
           this.$store.commit('setCart', data.products)
-          this.$router.push(`products?order-id=${id}`);
+          this.$router.push(`products?order-id=${id}&order-time=${moment(data.orderToDate).format("YYYY-MM-DD")}`);
         })
     },
+    changeStatus(event, id) {
+      const { value } = event.target
+      axios.patch(`http://localhost:5000/orders/${id}`, {
+        status: +value,
+        deliveryUserId: value !== "1" ? this.$store.state.currentUser.id : 0
+      })
+    },
+    checkIfAllowedForDelivery(order) {
+      return [undefined, 0, this.currentUser.id].includes(order.deliveryUserId)
+    },
+    checkIfEditable(order) {
+      return moment().isBefore(order.orderToDate) && +order.status === 1
+    },
+    checkIfReviewable(order) {
+      return moment().isAfter(order.orderToDate)
+    },
+    openReview(id) {
+      this.$emit('open-review-form', id)
+    }
   },
   computed: {
     orders: function() {
@@ -53,7 +88,10 @@ export default {
     },
     currentUser: function() {
       return this.$store.state.currentUser
-    }
+    },
+    isUserDelivery: function() {
+      return this.$store.state.currentUser.role === 'DELIVERY'
+    },
   },
   filters: {
     formatCurrency: function(value) {
@@ -61,10 +99,13 @@ export default {
     },
     formatDateTime: function(value) {
       return moment(value).format('YYYY-MM-DD HH:mm')
+    },
+    formatDate: function(value) {
+      return moment(value).format('YYYY-MM-DD')
     }
   },
   created() {
-    this.fetchOrders(this.currentUser.role !== 'ADMIN' ? this.currentUser.id : undefined)
+    this.fetchOrders(!['ADMIN', 'DELIVERY'].includes(this.currentUser.role) ? this.currentUser.id : undefined)
   },
 }
 </script>
