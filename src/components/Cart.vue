@@ -123,10 +123,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.hidden {
-  display: none !important;
-}
-
 .cart-wrapper {
   font-size: 20px;
   width: 30%;

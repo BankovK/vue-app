@@ -5,6 +5,8 @@
     <router-link v-if="isUserAdmin" to="/product/new" class="navbar-element">Add product</router-link>
     <router-link v-if="isUserAdmin" to="/products-admin" class="navbar-element">Products Admin</router-link>
     <router-link to="/orders" class="navbar-element">Orders</router-link>
+    <router-link v-if="isUserAdmin" to="/users-admin" class="navbar-element">Users Admin</router-link>
+    <router-link to="/faq" class="navbar-element">FAQ</router-link>
     <div class="navbar-element logout-button" @click="logout">LogOut</div>
   </div>
 </template>

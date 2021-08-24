@@ -1,14 +1,22 @@
 <template>
-  <div class="form-wrapper" :class="{ hidden: !productId }">
+  <div class="form-wrapper" v-if="faqFormData" >
     <div>
-      <h1>Write review</h1>
+      <h1>Question Form</h1>
       <form @submit.prevent="onSubmit">
-        <b-icon v-for="value in [1,2,3,4,5]" :key="value" :icon="rating >= value ? 'star-fill' : 'star'" @click="setRating(value)"></b-icon>
         <div>
-          <label htmlFor="comment">Comment</label>
+          <label htmlFor="question">Question</label>
+          <input
+            v-model="faqFormData.question"
+            id="question"
+            type="text"
+            autoComplete="off"
+          />
+        </div>
+        <div>
+          <label htmlFor="answer">Answer</label>
           <textarea
-            v-model="comment"
-            id="comment"
+            v-model="faqFormData.answer"
+            id="answer"
           />
         </div>
         <div v-if="error">{{error}}</div>
@@ -22,43 +30,49 @@
 <script>
 import moment from 'moment';
 import axios from 'axios';
-import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
-import { BIcon } from 'bootstrap-vue'
 
 export default {
-  name: 'ReviewForm',
-  components: {
-    BIcon
-  },
+  name: 'FAQForm',
   props: {
-    productId: Number
+    faqFormData: {
+      question: String,
+      answer: String
+    }
   },
   data() {
     return {
-      rating: 3,
-      comment: null
+      error: '',
     }
   },
   methods: {
     onSubmit() {
-      const reviewData = {
-        productId: this.productId,
-        userId: this.$store.state.currentUser.id,
-        userName: this.$store.state.currentUser.name,
-        comment: this.comment,
-        rating: this.rating,
+      if (!this.faqFormData.question || !this.faqFormData.answer) {
+        this.error = 'Fill the fields'
+        return
       }
-      axios.post("http://localhost:5000/reviews", {
-        ...reviewData,
-        creationTime: moment().toISOString()
-      })
-        .then(() => this.$emit('close-review-form'))
-    },
-    setRating(value) {
-      this.rating = value
+      const questionData = {
+        question: this.faqFormData.question,
+        answer: this.faqFormData.answer
+      }
+      if (this.faqFormData.id) {
+        questionData.id = this.faqFormData.id
+        axios.patch(`http://localhost:5000/questions/${this.faqFormData.id}`, questionData)
+          .then(({data}) => {
+            this.$emit('update-question', data)
+            this.closeForm()
+          })
+      } else {
+        questionData.creationTime = moment().toISOString()
+        axios.post("http://localhost:5000/questions", questionData)
+          .then(({data}) => {
+            this.$emit('add-question', data)
+            this.closeForm()
+          })
+      }
     },
     closeForm() {
-      this.$emit('close-review-form')
+      this.error = ''
+      this.$emit('close-faq-form')
     }
   }
 }

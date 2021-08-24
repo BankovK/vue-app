@@ -1,6 +1,6 @@
 <template>
-  <div class="form-wrapper">
-    <h1>Log In</h1>
+  <div class="form-wrapper" :class="{ hidden: !showUserForm }">
+    <h1>Register</h1>
     <form @submit.prevent="onSubmit">
       <div>
         <label htmlFor="username-register">Username</label>
@@ -19,46 +19,80 @@
           type="password"
         />
       </div>
+      <div>
+        <label htmlFor="password-repeat">Repeat Password</label>
+        <input
+          v-model="passwordRepeat"
+          id="password-repeat"
+          type="password"
+        />
+      </div>
+      <div>
+        <select v-model="role">
+          <option value='USER'>Customer</option>
+          <option value='ADMIN'>Admin</option>
+          <option value='DELIVERY'>Delivery</option>
+        </select>
+      </div>
       <div v-if="error">{{error}}</div>
-      <button type="submit" :disabled="!isFormFilled">Sign up</button>
+      <button type="button" @click="closeForm">Cancel</button>
+      <button type="submit" :disabled="!isFormFilled">Submit</button>
     </form>
   </div>
 </template>
 
 <script>
+import moment from 'moment';
 import { mapActions } from 'vuex'
 import axios from 'axios'
 
 export default {
-  name: 'LoginForm',
+  name: 'UserForm',
+  props: {
+    showUserForm: Boolean
+  },
   methods: {
     ...mapActions([
       'fetchProducts'
     ]),
     onSubmit() {
-      axios.get("http://localhost:5000/users", {
-        params: {
-          name: this.name,
-          password: this.password
-        }
+      if (!this.name) {
+        this.error = 'Name is mandatory'
+        return
+      }
+      if (this.password !== this.passwordRepeat) {
+        this.error = 'Passwords do not match'
+        return
+      }
+      axios.post("http://localhost:5000/users", {
+        name: this.name,
+        password: this.password,
+        role: this.role,
+        created: moment().toISOString()
       })
         .then(({data}) => {
-          if (data.length === 1) {
-            this.$store.commit('login', data[0])
-            if(!this.$store.state.products.wasRequested) {
-                this.fetchProducts()
-            }
-            this.$router.push('products')
-          } else {
-            this.error = 'Wrong credentials'
-          }
+
+          this.$emit('add-user', data)
+          this.closeForm()
         })
+    },
+    closeForm() {
+      this.$emit('close-user-form')
+    },
+    resetForm() {
+      this.name = ''
+      this.password = ''
+      this.passwordRepeat = ''
+      this.role = 'USER'
+      this.error = ''
     }
   },
   data() {
     return {
       name: '',
       password: '',
+      passwordRepeat: '',
+      role: 'USER',
       error: '',
     }
   },
@@ -73,13 +107,23 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .form-wrapper {
-  font-size: 50px;
-  margin: 0;
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
-  margin-right: -50%;
   transform: translate(-50%, -50%);
+  border: 1px solid black;
+  border-radius: 30px;
+  overflow: hidden;
+  font-size: 30px;
+  background-color: white;
+  padding: 10px;
+}
+
+select {
+  width: calc(100% - 20px);
+  margin: 10px;
+  border: 1px solid gray;
+  font-size: 50px;
 }
 
 .form-wrapper h1 {

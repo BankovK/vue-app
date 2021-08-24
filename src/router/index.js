@@ -3,7 +3,9 @@ import VueRouter from 'vue-router'
 import Products from '../views/Products.vue'
 import NewProduct from '../views/NewProduct.vue'
 import ProductsAdmin from '../views/ProductsAdmin.vue'
+import UsersAdmin from '../views/UsersAdmin.vue'
 import Orders from '../views/Orders.vue'
+import FAQ from '../views/FAQ.vue'
 import store from '../store'
 
 Vue.use(VueRouter)
@@ -32,6 +34,17 @@ const routes = [
     name: 'ProductsAdmin',
     component: ProductsAdmin,
     beforeEnter: checkIfAdmin
+  },
+  {
+    path: '/users-admin',
+    name: 'UsersAdmin',
+    component: UsersAdmin,
+    beforeEnter: checkIfAdmin
+  },
+  {
+    path: '/faq',
+    name: 'FAQ',
+    component: FAQ,
   },
   {
     path: '/orders',
