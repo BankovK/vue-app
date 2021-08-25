@@ -6,6 +6,9 @@
     <router-link v-if="isUserAdmin" to="/products-admin" class="navbar-element">Products Admin</router-link>
     <router-link to="/orders" class="navbar-element">Orders</router-link>
     <router-link v-if="isUserAdmin" to="/users-admin" class="navbar-element">Users Admin</router-link>
+    <router-link to="/contact-us" class="navbar-element">Contact Us</router-link>
+    <router-link to="/notifications" class="navbar-element">Notifications</router-link>
+    <router-link v-if="isUserAdmin || isUserSupport" to="/support-admin" class="navbar-element">Support Requests</router-link>
     <router-link to="/faq" class="navbar-element">FAQ</router-link>
     <div class="navbar-element logout-button" @click="logout">LogOut</div>
   </div>
@@ -28,6 +31,9 @@ export default {
     },
     isUserAdmin: function() {
       return this.$store.state.currentUser.role === 'ADMIN'
+    },
+    isUserSupport: function() {
+      return this.$store.state.currentUser.role === 'SUPPORT'
     },
     isCartOpen: function() {
       return this.$store.state.showCart

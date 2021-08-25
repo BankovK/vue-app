@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import ProductDetails from '../components/ProductDetails.vue'
-import ProductsList from '../components/ProductsList.vue'
+import ProductDetails from '../components/products/ProductDetails.vue'
+import ProductsList from '../components/products/ProductsList.vue'
 
 export default {
   name: 'Products',

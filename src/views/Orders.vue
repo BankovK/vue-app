@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import OrdersTable from '../components/OrdersTable.vue'
-import ReviewForm from '../components/ReviewForm.vue'
+import OrdersTable from '../components/orders/OrdersTable.vue'
+import ReviewForm from '../components/orders/ReviewForm.vue'
 
 export default {
   name: 'Orders',

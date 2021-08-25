@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import UserForm from '../components/UserForm.vue'
-import UsersTable from '../components/UsersTable.vue'
+import UserForm from '../components/users/UserForm.vue'
+import UsersTable from '../components/users/UsersTable.vue'
 import axios from 'axios'
 
 export default {

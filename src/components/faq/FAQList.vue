@@ -1,12 +1,14 @@
 <template>
   <div class="page-wrapper">
     <div class="question-card" v-for="question in questions" :key="question.id">
-      <h3>{{question.question}}</h3>
+      <h3 class="question-card__question">
+        {{question.question}}
+        <span v-if="isUserAdmin" class="button-line">
+          <button type="button" @click="editQuestion(question)">Edit</button>
+          <button type="button" @click="deleteQuestion(question)">Delete</button>
+        </span>
+      </h3>
       <div>{{question.answer}}</div>
-      <div v-if="isUserAdmin">
-        <button type="button" @click="editQuestion(question)">Edit</button>
-        <button type="button" @click="deleteQuestion(question)">Delete</button>
-      </div>
     </div>
   </div>
 </template>
@@ -24,7 +26,6 @@ export default {
       this.$emit('open-faq-form', question)
     },
     deleteQuestion(question) {
-      console.log('here')
       axios.delete(`http://localhost:5000/questions/${question.id}`)
         .then(() => this.$emit('delete-question', question.id))
     },
@@ -50,5 +51,10 @@ export default {
   margin: 10px;
   text-align: center;
   overflow: hidden;
+}
+.question-card__question {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

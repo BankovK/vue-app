@@ -32,6 +32,7 @@
           <option value='USER'>Customer</option>
           <option value='ADMIN'>Admin</option>
           <option value='DELIVERY'>Delivery</option>
+          <option value='SUPPORT'>Support</option>
         </select>
       </div>
       <div v-if="error">{{error}}</div>

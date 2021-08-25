@@ -64,6 +64,9 @@ button:hover {
   color: black;
   cursor: pointer;
 }
+.button-line {
+  display: flex;
+}
 * {
   margin: 0;
   padding: 0;

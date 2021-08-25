@@ -46,7 +46,7 @@ export default {
     formatDateTime: function(value) {
       return moment(value).format('YYYY-MM-DD HH:mm')
     },
-  }
+  },
 }
 </script>
 

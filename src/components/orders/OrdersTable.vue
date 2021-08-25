@@ -22,7 +22,7 @@
           <td>{{order.orderToDate | formatDate}}</td>
           <td>{{order.totalPrice | formatCurrency}}</td>
           <td>
-            <div v-if="!isUserDelivery && checkIfEditable(order)">
+            <div v-if="!isUserDelivery && checkIfEditable(order)" class="button-line">
               <button class="order-table__action-button" @click="editOrder(order.id)">Edit</button>
               <button class="order-table__action-button" @click="deleteOrder(order.id)">Delete</button>
             </div>

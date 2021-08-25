@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ProductForm from '../components/ProductForm.vue'
+import ProductForm from '../components/products/ProductForm.vue'
 
 export default {
   name: 'NewProduct',

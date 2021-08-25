@@ -27,6 +27,13 @@
       "password": "test4",
       "created": "2021-08-23T16:08:35.353Z",
       "role": "DELIVERY"
+    },
+    {
+      "name": "test5",
+      "password": "test5",
+      "role": "SUPPORT",
+      "created": "2021-08-25T16:08:35.353Z",
+      "id": 5
     }
   ],
   "questions": [
@@ -55,7 +62,76 @@
       "id": 4
     }
   ],
-  "orders": [],
+  "notifications": [
+    {
+      "title": "News",
+      "text": "News text",
+      "userId": 0,
+      "creationTime": "2021-08-25T16:08:35.353Z",
+      "id": 1
+    },
+    {
+      "title": "reply",
+      "text": "reply text",
+      "userId": 1,
+      "creationTime": "2021-08-25T16:08:35.353Z",
+      "id": 4
+    }
+  ],
+  "contact": [
+    {
+      "title": "1123",
+      "description": "444",
+      "type": "Bug report",
+      "created": "2021-08-25T16:08:35.353Z",
+      "status": 2,
+      "userId": 1,
+      "userName": "test",
+      "id": 1,
+      "lockedByUserId": 1
+    },
+    {
+      "title": "134",
+      "description": "567",
+      "type": "Complaint",
+      "created": "2021-08-25T16:08:35.353Z",
+      "status": 3,
+      "userId": 5,
+      "userName": "test5",
+      "id": 2,
+      "lockedByUserId": 5
+    },
+    {
+      "title": "333",
+      "description": "444",
+      "type": "Bug report",
+      "created": "2021-08-25T16:08:35.353Z",
+      "status": "1",
+      "userId": 1,
+      "userName": "test",
+      "id": 3
+    }
+  ],
+  "orders": [
+    {
+      "products": [
+        {
+          "id": 2,
+          "name": "Product2",
+          "price": "87",
+          "description": "",
+          "imageUrl": "https://blogs.uoregon.edu/natewoodburyaad250/files/2012/10/PSD_Food_illustrations_3190_pancakes_with_butter-1wi1tz5.jpg",
+          "quantity": 1
+        }
+      ],
+      "userId": 1,
+      "totalPrice": 87,
+      "orderToDate": "2021-08-27",
+      "status": "1",
+      "orderTime": "2021-08-25T16:08:35.353Z",
+      "id": 1
+    }
+  ],
   "reviews": [
     {
       "productId": 2,

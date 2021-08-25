@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import FAQForm from '../components/FAQForm.vue'
-import FAQList from '../components/FAQList.vue'
+import FAQForm from '../components/faq/FAQForm.vue'
+import FAQList from '../components/faq/FAQList.vue'
 import axios from 'axios'
 
 export default {
