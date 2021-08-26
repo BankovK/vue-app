@@ -4,8 +4,9 @@
     <router-link to="/products" class="navbar-element">Products</router-link>
     <router-link v-if="isUserAdmin" to="/product/new" class="navbar-element">Add product</router-link>
     <router-link v-if="isUserAdmin" to="/products-admin" class="navbar-element">Products Admin</router-link>
+    <router-link v-if="isUserAdmin" to="/tags-admin" class="navbar-element">Tags</router-link>
     <router-link to="/orders" class="navbar-element">Orders</router-link>
-    <router-link v-if="isUserAdmin" to="/users-admin" class="navbar-element">Users Admin</router-link>
+    <router-link v-if="isUserAdmin" to="/users-admin" class="navbar-element">Users</router-link>
     <router-link to="/contact-us" class="navbar-element">Contact Us</router-link>
     <router-link to="/notifications" class="navbar-element">Notifications</router-link>
     <router-link v-if="isUserAdmin || isUserSupport" to="/support-admin" class="navbar-element">Support Requests</router-link>

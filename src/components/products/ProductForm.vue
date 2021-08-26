@@ -22,6 +22,12 @@
           />
         </div>
         <div>
+          <label htmlFor="tags">Tags</label>
+          <select multiple id="tags" v-model="tags">
+            <option v-for="tag in availableTags" :value="tag.id" :key="tag.id">{{tag.name}}</option>
+          </select>
+        </div>
+        <div>
           <label htmlFor="description">Description</label>
           <textarea
             v-model="description"
@@ -48,6 +54,7 @@ export default {
           name: this.name,
           price: this.price,
           description: this.description,
+          tags: this.tags,
           imageUrl: 'https://blogs.uoregon.edu/natewoodburyaad250/files/2012/10/PSD_Food_illustrations_3190_pancakes_with_butter-1wi1tz5.jpg'
         }
         if(!this.isEdit) {
@@ -74,7 +81,9 @@ export default {
       price: '',
       error: '',
       description: '',
+      tags: [],
       productId: null,
+      availableTags: [],
       loading: false
     }
   },
@@ -94,10 +103,17 @@ export default {
         .then(({data}) => {
           this.name = data.name
           this.price = data.price
+          this.tags = data.tags
           this.loading = false
         })
     }
-  }
+  },
+  created() {
+    axios.get(`http://localhost:5000/tags`)
+      .then(({data}) => {
+        this.availableTags = data
+      })
+  },
 }
 </script>
 
@@ -108,6 +124,12 @@ export default {
   font-size: 50px;
   display: flex;
   justify-content: center;
+}
+
+select {
+  width: 100%;
+  border: 1px solid gray;
+  font-size: 50px;
 }
 
 textarea {

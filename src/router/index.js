@@ -4,6 +4,7 @@ import Products from '../views/Products.vue'
 import NewProduct from '../views/NewProduct.vue'
 import ProductsAdmin from '../views/ProductsAdmin.vue'
 import UsersAdmin from '../views/UsersAdmin.vue'
+import TagsAdmin from '../views/TagsAdmin.vue'
 import Orders from '../views/Orders.vue'
 import Support from '../views/Support.vue'
 import ContactUs from '../views/ContactUs.vue'
@@ -36,6 +37,12 @@ const routes = [
     path: '/products-admin',
     name: 'ProductsAdmin',
     component: ProductsAdmin,
+    beforeEnter: checkRole('ADMIN')
+  },
+  {
+    path: '/tags-admin',
+    name: 'TagsAdmin',
+    component: TagsAdmin,
     beforeEnter: checkRole('ADMIN')
   },
   {

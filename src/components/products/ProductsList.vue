@@ -14,6 +14,9 @@
 <script>
 export default {
   name: 'ProductsList',
+  props: {
+    products: Array
+  },
   methods: {
     addToCart(product) {
       this.$store.commit('addToCart', product)
@@ -21,11 +24,6 @@ export default {
     openDetails(product) {
       this.$emit('open-product-details', product)
     },
-  },
-  computed: {
-    products: function() {
-      return this.$store.state.products.data
-    }
   },
   filters: {
     formatCurrency: function(value) {
@@ -43,7 +41,6 @@ export default {
   justify-content: center;
 }
 .products-wrapper {
-  margin-top: 100px;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
