@@ -3,9 +3,9 @@
     <table class="order-table">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Created</th>
-          <th>Role</th>
+          <th>{{$t('name')}}</th>
+          <th>{{$t('created_at')}}</th>
+          <th>{{$t('users.role')}}</th>
         </tr>
       </thead>
       <tbody>
@@ -14,9 +14,10 @@
           <td>{{user.created | formatDateTime}}</td>
           <td>
             <select v-model="user.role" @change="(event) => changeRole(event, user.id)">
-              <option value='USER'>Customer</option>
-              <option value='ADMIN'>Admin</option>
-              <option value='DELIVERY'>Delivery</option>
+              <option value='USER'>{{$t('users.roles.customer')}}</option>
+              <option value='ADMIN'>{{$t('users.roles.admin')}}</option>
+              <option value='DELIVERY'>{{$t('users.roles.delivery')}}</option>
+              <option value='SUPPORT'>{{$t('users.roles.support')}}</option>
             </select>
           </td>
         </tr>
@@ -53,7 +54,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .order-table-wrapper {
-  padding-top: 80px;
   width: 80%;
   margin-left: 10%;
 }

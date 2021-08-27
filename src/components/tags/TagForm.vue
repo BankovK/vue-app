@@ -1,10 +1,10 @@
 <template>
   <div class="form-wrapper" v-if="tagFormData" >
     <div>
-      <h1>Tag Form</h1>
+      <h1>{{$t('tags_admin.tag_form_title')}}</h1>
       <form @submit.prevent="onSubmit">
         <div>
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name">{{$t('name')}}</label>
           <input
             v-model="tagFormData.name"
             id="name"
@@ -13,7 +13,7 @@
           />
         </div>
         <div>
-          <label htmlFor="priority">Priority</label>
+          <label htmlFor="priority">{{$t('tags_admin.priority')}}</label>
           <input
             v-model="tagFormData.priority"
             id="priority"
@@ -21,8 +21,8 @@
           />
         </div>
         <div v-if="error">{{error}}</div>
-        <button type="button" @click="closeForm">Cancel</button>
-        <button type="submit">Submit</button>
+        <button type="button" @click="closeForm">{{$t('cancel')}}</button>
+        <button type="submit">{{$t('submit')}}</button>
       </form>
     </div>
   </div>
@@ -48,7 +48,7 @@ export default {
   methods: {
     onSubmit() {
       if (!this.tagFormData.name || !this.tagFormData.priority) {
-        this.error = 'Fill the fields'
+        this.error = this.$t('forms.fill_the_fields')
         return
       }
       const tagData = {
@@ -64,7 +64,7 @@ export default {
           })
       } else {
         if (this.tagNames.includes(this.tagFormData.name)) {
-          this.error = 'Name is taken'
+          this.error = this.$t('forms.name_exists')
           return
         }
         axios.post("http://localhost:5000/tags", tagData)

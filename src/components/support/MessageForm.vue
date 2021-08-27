@@ -1,10 +1,10 @@
 <template>
   <div class="form-wrapper">
     <div>
-      <h1>Send us a message</h1>
+      <h1>{{$t('messages.message_form_title')}}</h1>
       <form @submit.prevent="onSubmit">
         <div>
-          <label htmlFor="title">Title</label>
+          <label htmlFor="title">{{$t('messages.title')}}</label>
           <input
             v-model="title"
             id="title"
@@ -13,15 +13,15 @@
           />
         </div>
         <div>
-          <label htmlFor="type">Type</label>
+          <label htmlFor="type">{{$t('messages.type')}}</label>
           <select id="type" v-model="type">
-            <option value='Bug report'>Bug report</option>
-            <option value='Complaint'>Complaint</option>
-            <option value='Other'>Other</option>
+            <option value='Bug report'>{{$t('messages.types.bug_report')}}</option>
+            <option value='Complaint'>{{$t('messages.types.complaint')}}</option>
+            <option value='Other'>{{$t('messages.types.other')}}</option>
           </select>
         </div>
         <div>
-          <label htmlFor="description">Description</label>
+          <label htmlFor="description">{{$t('messages.description')}}</label>
           <textarea
             v-model="description"
             id="description"
@@ -29,7 +29,7 @@
           />
         </div>
         <div v-if="error">{{error}}</div>
-        <button type="submit" :disabled="!isFormFilled">Send</button>
+        <button type="submit" :disabled="!isFormFilled">{{$t('messages.send')}}</button>
       </form>
     </div>
   </div>
@@ -61,7 +61,7 @@ export default {
             this.error = ''
           })
       } else {
-        this.error = 'Fill the form!'
+        this.error = this.$t('forms.fill_the_fields')
       }
     }
   },

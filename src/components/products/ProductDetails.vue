@@ -1,21 +1,21 @@
 <template>
   <div class="form-wrapper" v-if="productData">
     <div>
-      <h1>{{productData.name}} Details</h1>
+      <h1>{{productData.name}}</h1>
       <div v-if="averageRating">
-        Average rating: {{averageRating | formatRating}}<b-icon icon="star-fill"></b-icon>
+        {{$t('reviews.average_rating')}}: {{averageRating | formatRating}}<b-icon icon="star-fill"></b-icon>
       </div>
       <div>
         <p>{{productData.description}}</p>
       </div>
-      <div v-if="loading">Loading...</div>
+      <div v-if="loading">{{$t('loading')}}</div>
       <table class="reviews-table" v-else>
         <thead>
           <tr>
-            <th>User Name</th>
-            <th>Rating</th>
-            <th>Comment</th>
-            <th>Date</th>
+            <th>{{$t('reviews.user_name')}}</th>
+            <th>{{$t('reviews.rating')}}</th>
+            <th>{{$t('reviews.comment')}}</th>
+            <th>{{$t('reviews.date')}}</th>
           </tr>
         </thead>
         <tbody>
@@ -27,7 +27,7 @@
           </tr>
         </tbody>
       </table>
-      <button type="button" @click="closeForm">Close</button>
+      <button type="button" @click="closeForm">{{$t('close')}}</button>
     </div>
   </div>
 </template>

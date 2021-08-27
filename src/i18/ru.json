@@ -1,0 +1,110 @@
+{
+  "faq": {
+    "question_form": "Вопрос",
+    "question": "Вопрос",
+    "answer": "Ответ"
+  },
+  "notifications": {
+    "form_title": {
+      "new": "Сообщение",
+      "reply": "Ответ"
+    },
+    "title": "Заглавие",
+    "text": "Текст"
+  },
+  "orders": {
+    "products": "Товар",
+    "order_time": "Время создания",
+    "ordered_to_date": "Заказан на",
+    "total_price": "Полная цена"
+  },
+  "reviews": {
+    "review_form_title": "Отзыв",
+    "user_name": "Имя пользователя",
+    "rating": "Рейтинг",
+    "comment": "Комментарий",
+    "average_rating": "Средний рейтинг",
+    "date": "Дата"
+  },
+  "products": {
+    "form_title": {
+      "new": "Создать товар",
+      "edit": "Изменить товар"
+    },
+    "product": "Товар",
+    "price": "Цена",
+    "description": "Описание",
+    "order": "Заказать"
+  },
+  "messages": {
+    "message_form_title": "Отправить сообщение",
+    "type": "Тип",
+    "types": {
+      "bug_report": "Неисправность",
+      "complaint": "Жалоба",
+      "other": "Другое"
+    },
+    "title": "Заглавие",
+    "description": "Описание",
+    "send": "Отправить",
+    "created_by": "Имя автора",
+    "reply": "Ответить"
+  },
+  "tags_admin": {
+    "tag_form_title": "Тег",
+    "priority": "Приоритет"
+  },
+  "users": {
+    "user_form_title": "Добавить пользователя",
+    "password": "Пароль",
+    "repeat_password": "Повторите пароль",
+    "role": "Роль",
+    "roles": {
+      "customer": "Покупатель",
+      "admin": "Админ",
+      "delivery": "Доставка",
+      "support": "Поддержка"
+    },
+    "sign_up": "Войти"
+  },
+  "cart": {
+    "amount": "Кол-во",
+    "edit_order": "Принять изменения"
+  },
+  "forms": {
+    "fill_the_fields": "Заполните поля",
+    "name_exists": "Имя занято",
+    "passwords_do_not_match": "Пароли не совпадают"
+  },
+  "navbar": {
+    "cart": "Корзина:",
+    "order_products": "Товары заказа:",
+    "products": "Товары",
+    "add_product": "Добавить товар",
+    "products_admin": "Админ товары",
+    "orders": "Заказы",
+    "users": "Пользователи",
+    "contact_us": "Поддержка",
+    "notifications": "Сообщения",
+    "support_requests": "Окно поддержки",
+    "faq": "FAQ",
+    "logout": "Выйти"
+  },
+  "status": "Статус",
+  "statuses": {
+    "to_do:": "Ожидание",
+    "in_progress": "В процессе",
+    "delivered": "Доставлен",
+    "resolved": "Выполнен"
+  },
+  "cancel": "Отмена",
+  "close": "Закрыть",
+  "submit": "ОК",
+  "edit": "Изменить",
+  "delete": "Удалить",
+  "loading": "Загрузка...",
+  "created_at": "Создано в",
+  "name": "Имя",
+  "tags": "Теги",
+  "export": "Экспорт"
+}

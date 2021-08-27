@@ -1,14 +1,13 @@
 <template>
   <div class="messages-table-wrapper">
-    <div v-if="loading">Loading...</div>
-    <table class="messages-table" v-else>
+    <table class="messages-table">
       <thead>
         <tr>
-          <th>Title</th>
-          <th>Type</th>
-          <th>Created At</th>
-          <th>Created By</th>
-          <th>Status</th>
+          <th>{{$t('messages.title')}}</th>
+          <th>{{$t('messages.type')}}</th>
+          <th>{{$t('created_at')}}</th>
+          <th>{{$t('messages.created_by')}}</th>
+          <th>{{$t('status')}}</th>
           <th></th>
         </tr>
       </thead>
@@ -20,13 +19,13 @@
           <td>{{message.userName}}</td>
           <td>
             <select v-model="message.status" @change="(event) => changeStatus(event, message.id)" :disabled="!checkIfAllowedToChangeStatus(message)">
-              <option value='1'>To Do</option>
-              <option value='2'>In Progress</option>
-              <option value='3'>Resolved</option>
+              <option value='1'>{{$t('statuses.to_do')}}</option>
+              <option value='2'>{{$t('statuses.in_progress')}}</option>
+              <option value='3'>{{$t('statuses.resolved')}}</option>
             </select>
           </td>
           <td>
-            <button class="messages-table__action-button" @click="replyToMessage(message)">Reply</button>
+            <button class="messages-table__action-button" @click="replyToMessage(message)">{{$t('messages.reply')}}</button>
           </td>
         </tr>
       </tbody>
@@ -40,11 +39,8 @@ import axios from 'axios'
 
 export default {
   name: 'MessagesTable',
-  data() {
-    return {
-      messages: [],
-      loading: false
-    }
+  props: {
+    messages: Array
   },
   methods: {
     changeStatus(event, id) {
@@ -70,22 +66,13 @@ export default {
     formatDateTime: function(value) {
       return moment(value).format('YYYY-MM-DD HH:mm')
     },
-  },
-  created() {
-    this.loading = true
-    axios.get(`http://localhost:5000/contact`)
-      .then(({data}) => {
-        this.messages = data
-        this.loading = false
-      })
-  },
+  }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .messages-table-wrapper {
-  padding-top: 80px;
   width: 80%;
   margin-left: 10%;
 }

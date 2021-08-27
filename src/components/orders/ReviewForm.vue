@@ -1,19 +1,19 @@
 <template>
   <div class="form-wrapper" :class="{ hidden: !productId }">
     <div>
-      <h1>Write review</h1>
+      <h1>{{$t('reviews.review_form_title')}}</h1>
       <form @submit.prevent="onSubmit">
         <b-icon v-for="value in [1,2,3,4,5]" :key="value" :icon="rating >= value ? 'star-fill' : 'star'" @click="setRating(value)"></b-icon>
         <div>
-          <label htmlFor="comment">Comment</label>
+          <label htmlFor="comment">{{$t('reviews.comment')}}</label>
           <textarea
             v-model="comment"
             id="comment"
           />
         </div>
         <div v-if="error">{{error}}</div>
-        <button type="button" @click="closeForm">Cancel</button>
-        <button type="submit">Submit</button>
+        <button type="button" @click="closeForm">{{$t('cancel')}}</button>
+        <button type="submit">{{$t('submit')}}</button>
       </form>
     </div>
   </div>
@@ -36,7 +36,8 @@ export default {
   data() {
     return {
       rating: 3,
-      comment: null
+      comment: null,
+      error: ''
     }
   },
   methods: {

@@ -1,11 +1,11 @@
 <template>
   <div class="form-wrapper">
     <div>
-      <h1>{{this.isEdit ? 'Edit Product' : 'Create Product'}}</h1>
-      <div v-if="loading">Loading...</div>
+      <h1>{{this.isEdit ? $t('products.form_title.edit') : $t('products.form_title.new')}}</h1>
+      <div v-if="loading">{{$t('loading')}}</div>
       <form @submit.prevent="onSubmit" v-else>
         <div>
-          <label htmlFor="product-name">Name</label>
+          <label htmlFor="product-name">{{$t('name')}}</label>
           <input
             v-model="name"
             id="product-name"
@@ -14,7 +14,7 @@
           />
         </div>
         <div>
-          <label htmlFor="product-price">Price</label>
+          <label htmlFor="product-price">{{$t('products.price')}}</label>
           <input
             v-model="price"
             id="product-price"
@@ -22,13 +22,13 @@
           />
         </div>
         <div>
-          <label htmlFor="tags">Tags</label>
+          <label htmlFor="tags">{{$t('tags')}}</label>
           <select multiple id="tags" v-model="tags">
             <option v-for="tag in availableTags" :value="tag.id" :key="tag.id">{{tag.name}}</option>
           </select>
         </div>
         <div>
-          <label htmlFor="description">Description</label>
+          <label htmlFor="description">{{$t('products.description')}}</label>
           <textarea
             v-model="description"
             id="description"
@@ -36,7 +36,7 @@
           />
         </div>
         <div v-if="error">{{error}}</div>
-        <button type="submit" :disabled="!isFormFilled">{{this.isEdit ? 'Edit' : 'Create'}}</button>
+        <button type="submit" :disabled="!isFormFilled">{{this.isEdit ? $t('edit') : $t('submit')}}</button>
       </form>
     </div>
   </div>
@@ -71,7 +71,7 @@ export default {
             })
           }
       } else {
-        this.error = 'Fill the form!'
+        this.error = this.$t('forms.fill_the_fields')
       }
     }
   },

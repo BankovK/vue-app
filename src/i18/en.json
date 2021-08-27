@@ -1,0 +1,110 @@
+{
+  "faq": {
+    "question_form": "Question Form",
+    "question": "Question",
+    "answer": "Answer"
+  },
+  "notifications": {
+    "form_title": {
+      "new": "Notification Form",
+      "reply": "Reply"
+    },
+    "title": "Title",
+    "text": "Text"
+  },
+  "orders": {
+    "products": "Products",
+    "order_time": "Order Time",
+    "ordered_to_date": "Ordered To Date",
+    "total_price": "Total Price"
+  },
+  "reviews": {
+    "review_form_title": "Write review",
+    "user_name": "User Name",
+    "rating": "Rating",
+    "comment": "Comment",
+    "average_rating": "Average rating",
+    "date": "Date"
+  },
+  "products": {
+    "form_title": {
+      "new": "Create Product",
+      "edit": "Edit Product"
+    },
+    "product": "Product",
+    "price": "Price",
+    "description": "Description",
+    "order": "Order"
+  },
+  "messages": {
+    "message_form_title": "Send us a message",
+    "type": "Type",
+    "types": {
+      "bug_report": "Bug Report",
+      "complaint": "Complaint",
+      "other": "Other"
+    },
+    "title": "Title",
+    "description": "Description",
+    "send": "Send",
+    "created_by": "Created By",
+    "reply": "Reply"
+  },
+  "tags_admin": {
+    "tag_form_title": "Tag Form",
+    "priority": "Priority"
+  },
+  "users": {
+    "user_form_title": "Add User",
+    "password": "Password",
+    "repeat_password": "Repeat password",
+    "role": "Role",
+    "roles": {
+      "customer": "Customer",
+      "admin": "Admin",
+      "delivery": "Delivery",
+      "support": "Support"
+    },
+    "sign_up": "Sign Up"
+  },
+  "cart": {
+    "amount": "Amount",
+    "edit_order": "Submit Changes"
+  },
+  "forms": {
+    "fill_the_fields": "Fill the fields",
+    "name_exists": "This name is taken",
+    "passwords_do_not_match": "Passwords do not match"
+  },
+  "navbar": {
+    "cart": "Cart:",
+    "order_products": "Order Products:",
+    "products": "Products",
+    "add_product": "Add product",
+    "products_admin": "Products Admin",
+    "orders": "Orders",
+    "users": "Users",
+    "contact_us": "Contact Us",
+    "notifications": "Notifications",
+    "support_requests": "Support Requests",
+    "faq": "FAQ",
+    "logout": "LogOut"
+  },
+  "status": "Status",
+  "statuses": {
+    "to_do:": "To Do",
+    "in_progress": "In Progress",
+    "delivered": "Delivered",
+    "resolved": "Resolved"
+  },
+  "cancel": "Cancel",
+  "close": "Close",
+  "submit": "Submit",
+  "edit": "Edit",
+  "delete": "Delete",
+  "loading": "Loading...",
+  "created_at": "Created At",
+  "name": "Name",
+  "tags": "Tags",
+  "export": "Export"
+}

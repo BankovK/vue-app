@@ -3,7 +3,7 @@
     <h1>Log In</h1>
     <form @submit.prevent="onSubmit">
       <div>
-        <label htmlFor="username-register">Username</label>
+        <label htmlFor="username-register">{{$t('name')}}</label>
         <input
           v-model="name"
           id="username-register"
@@ -12,7 +12,7 @@
         />
       </div>
       <div>
-        <label htmlFor="password-register">Password</label>
+        <label htmlFor="password-register">{{$t('users.password')}}</label>
         <input
           v-model="password"
           id="password-register"
@@ -20,7 +20,7 @@
         />
       </div>
       <div v-if="error">{{error}}</div>
-      <button type="submit" :disabled="!isFormFilled">Sign up</button>
+      <button type="submit" :disabled="!isFormFilled">{{$t('users.sign_up')}}</button>
     </form>
   </div>
 </template>

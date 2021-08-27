@@ -11,9 +11,9 @@
     <table class="cart-table">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Amount</th>
-          <th>Price</th>
+          <th>{{$t('name')}}</th>
+          <th>{{$t('cart.amount')}}</th>
+          <th>{{$t('products.price')}}</th>
         </tr>
       </thead>
       <tbody>
@@ -39,10 +39,10 @@
       </tbody>
     </table>
     <div class="total-price">
-      <div>Total: {{totalPrice | formatCurrency}}</div>
+      <div>{{$t('orders.total_price')}}: {{totalPrice | formatCurrency}}</div>
       <div>
         <button class="order-button" @click="order" :class="{'order-button--disabled': !orderToDate}" :disabled="!orderToDate">
-          {{!!this.$route.query['order-id'] ? 'Submit Changes' : "Order"}}
+          {{!!this.$route.query['order-id'] ? $t('cart.edit_order') : $t('products.order')}}
         </button>
       </div>
     </div>

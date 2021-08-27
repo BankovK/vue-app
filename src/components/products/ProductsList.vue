@@ -1,11 +1,11 @@
 <template>
-  <div class="page-wrapper">
+  <div class="list-wrapper">
     <div class="products-wrapper">
       <div class="product-card" v-for="product in products" :key="product.id">
         <img class="product-card__image" :src="product.imageUrl" @click="openDetails(product)"/>
         <div>{{product.name}}</div>
         <div>{{product.price | formatCurrency}}</div>
-        <div><button class="product-card__order-button" type="button" @click="addToCart(product)">Order</button></div>
+        <div><button class="product-card__order-button" type="button" @click="addToCart(product)">{{$t('products.order')}}</button></div>
       </div>
     </div>
   </div>
@@ -35,7 +35,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.page-wrapper {
+.list-wrapper {
   font-size: 50px;
   display: flex;
   justify-content: center;

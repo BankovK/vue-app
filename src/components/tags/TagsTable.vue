@@ -3,8 +3,8 @@
     <table class="tags-table">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Priority</th>
+          <th>{{$t('name')}}</th>
+          <th>{{$t('tags_admin.priority')}}</th>
           <th></th>
         </tr>
       </thead>
@@ -13,8 +13,8 @@
           <td>{{tag.name}}</td>
           <td>{{tag.priority}}</td>
           <td>
-            <button class="tags-table__action-button" @click="editTag(tag)">Edit</button>
-            <button class="tags-table__action-button" @click="deleteTag(tag.id)">Delete</button>
+            <button class="tags-table__action-button" @click="editTag(tag)">{{$t('edit')}}</button>
+            <button class="tags-table__action-button" @click="deleteTag(tag.id)">{{$t('delete')}}</button>
           </td>
         </tr>
       </tbody>

@@ -1,10 +1,10 @@
 <template>
   <div class="form-wrapper" v-if="showNotificationForm" >
     <div>
-      <h1>{{replyUserId ? 'Reply' : 'New Notification'}}</h1>
+      <h1>{{replyUserId ? $t('notifications.form_title.reply') : $t('notifications.form_title.new')}}</h1>
       <form @submit.prevent="onSubmit">
         <div>
-          <label htmlFor="title">Title</label>
+          <label htmlFor="title">{{$t('notifications.title')}}</label>
           <input
             v-model="title"
             id="title"
@@ -13,15 +13,15 @@
           />
         </div>
         <div>
-          <label htmlFor="text">Text</label>
+          <label htmlFor="text">{{$t('notifications.text')}}</label>
           <textarea
             v-model="text"
             id="text"
           />
         </div>
         <div v-if="error">{{error}}</div>
-        <button type="button" @click="closeForm">Cancel</button>
-        <button type="submit">Submit</button>
+        <button type="button" @click="closeForm">{{$t('cancel')}}</button>
+        <button type="submit">{{$t('submit')}}</button>
       </form>
     </div>
   </div>
@@ -47,7 +47,7 @@ export default {
   methods: {
     onSubmit() {
       if (!this.title || !this.text) {
-        this.error = 'Fill the fields'
+        this.error = this.$t('forms.fill_the_fields')
         return
       }
       const notificationData = {

@@ -3,7 +3,7 @@
     <h1>Register</h1>
     <form @submit.prevent="onSubmit">
       <div>
-        <label htmlFor="username-register">Username</label>
+        <label htmlFor="username-register">{{$t('name')}}</label>
         <input
           v-model="name"
           id="username-register"
@@ -12,7 +12,7 @@
         />
       </div>
       <div>
-        <label htmlFor="password-register">Password</label>
+        <label htmlFor="password-register">{{$t('users.password')}}</label>
         <input
           v-model="password"
           id="password-register"
@@ -20,7 +20,7 @@
         />
       </div>
       <div>
-        <label htmlFor="password-repeat">Repeat Password</label>
+        <label htmlFor="password-repeat">{{$t('users.repeat_password')}}</label>
         <input
           v-model="passwordRepeat"
           id="password-repeat"
@@ -29,15 +29,15 @@
       </div>
       <div>
         <select v-model="role">
-          <option value='USER'>Customer</option>
-          <option value='ADMIN'>Admin</option>
-          <option value='DELIVERY'>Delivery</option>
-          <option value='SUPPORT'>Support</option>
+          <option value='USER'>{{$t('users.roles.customer')}}</option>
+          <option value='ADMIN'>{{$t('users.roles.admin')}}</option>
+          <option value='DELIVERY'>{{$t('users.roles.delivery')}}</option>
+          <option value='SUPPORT'>{{$t('users.roles.support')}}</option>
         </select>
       </div>
       <div v-if="error">{{error}}</div>
-      <button type="button" @click="closeForm">Cancel</button>
-      <button type="submit" :disabled="!isFormFilled">Submit</button>
+      <button type="button" @click="closeForm">{{$t('cancel')}}</button>
+      <button type="submit" :disabled="!isFormFilled">{{$t('submit')}}</button>
     </form>
   </div>
 </template>
@@ -57,12 +57,12 @@ export default {
       'fetchProducts'
     ]),
     onSubmit() {
-      if (!this.name) {
-        this.error = 'Name is mandatory'
+      if (!this.name || !this.password) {
+        this.error = this.$t('forms.fill_the_fields')
         return
       }
       if (this.password !== this.passwordRepeat) {
-        this.error = 'Passwords do not match'
+        this.error = this.$t('forms.passwords_do_not_match')
         return
       }
       axios.post("http://localhost:5000/users", {

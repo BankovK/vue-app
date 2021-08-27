@@ -1,8 +1,10 @@
 <template>
   <div class="page-wrapper">
-    <TagsTable :tags="tags" @open-tag-form="openTagForm" @delete-tag="removeTag"/>
+    <FilterPanel @change-search-params="changeSearchParams" />
+    <TagsTable :tags="filteredTags" @open-tag-form="openTagForm" @delete-tag="removeTag"/>
     <TagForm :tagFormData="tagFormData" :tagNames="tagNames" @close-tag-form="closeTagForm" @add-tag="addTag" @update-tag="updateTag" />
     <button @click="openTagForm()">Add</button>
+    <ExportButton @on-export="onExport" :exportData="exportData" />
   </div>
 </template>
 
@@ -10,25 +12,43 @@
 import TagsTable from '../components/tags/TagsTable.vue'
 import TagForm from '../components/tags/TagForm.vue'
 import axios from 'axios'
+import FilterPanel from '../components/FilterPanel.vue'
+import ExportButton from '../components/ExportButton.vue'
 
 export default {
   name: 'TagsAdmin',
   components: {
     TagsTable,
-    TagForm
+    TagForm,
+    FilterPanel,
+    ExportButton
   },
   data() {
     return {
       tagFormData: null,
-      tags: []
+      tags: [],
+      searchName: '',
+      exportData: null
     }
   },
   computed: {
     tagNames: function() {
       return this.tags.map(_tag => _tag.name)
-    }
+    },
+    filteredTags: function() {
+      return this.tags.filter(tags => tags.name.toLowerCase().includes(this.searchName.toLowerCase()))
+    },
   },
   methods: {
+    onExport() {
+      this.exportData = this.filteredTags.map(tag => ({
+        [this.$t('name')]: tag.name,
+        [this.$t('tags_admin.priority')]: tag.priority
+      }))
+    },
+    changeSearchParams({name}) {
+      this.searchName = name
+    },
     openTagForm(data) {
       if (!data) {
         this.tagFormData = {
@@ -62,9 +82,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-  .page-wrapper {
-    padding-top: 80px;
-  }
-</style>

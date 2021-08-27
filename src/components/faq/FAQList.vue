@@ -4,8 +4,8 @@
       <h3 class="question-card__question">
         {{question.question}}
         <span v-if="isUserAdmin" class="button-line">
-          <button type="button" @click="editQuestion(question)">Edit</button>
-          <button type="button" @click="deleteQuestion(question)">Delete</button>
+          <button type="button" @click="editQuestion(question)">{{$t('edit')}}</button>
+          <button type="button" @click="deleteQuestion(question)">{{$t('delete')}}</button>
         </span>
       </h3>
       <div>{{question.answer}}</div>

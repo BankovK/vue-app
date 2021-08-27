@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <FilterPanel @change-search-params="changeSearchParams" />
+  <div class="page-wrapper">
+    <FilterPanel @change-search-params="changeSearchParams" :showTags="true" />
     <ProductsList @open-product-details="openProductDetails" :products="products" />
     <ProductDetails @close-product-details="closeProductDetails" :productData="productDetailsData"/>
   </div>

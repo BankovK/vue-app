@@ -3,10 +3,10 @@
     <table class="order-table">
       <thead>
         <tr>
-          <th>Products</th>
-          <th>Order Time</th>
-          <th>Ordered To Date</th>
-          <th>Total Price</th>
+          <th>{{$t('orders.products')}}</th>
+          <th>{{$t('orders.order_time')}}</th>
+          <th>{{$t('orders.ordered_to_date')}}</th>
+          <th>{{$t('orders.total_price')}}</th>
           <th></th>
         </tr>
       </thead>
@@ -28,9 +28,9 @@
             </div>
             <div v-if="isUserDelivery">
               <select v-model="order.status" @change="(event) => changeStatus(event, order.id)" :disabled="!checkIfAllowedForDelivery(order)">
-                <option value='1'>To Do</option>
-                <option value='2'>In Progress</option>
-                <option value='3'>Delivered</option>
+                <option value='1'>{{$t('statuses.to_do')}}</option>
+                <option value='2'>{{$t('statuses.in_progress')}}</option>
+                <option value='3'>{{$t('statuses.delivered')}}</option>
               </select>
             </div>
           </td>
@@ -47,6 +47,9 @@ import { mapActions } from 'vuex'
 
 export default {
   name: 'ProductsList',
+  props: {
+    orders: Array
+  },
   methods: {
     ...mapActions([
       'fetchOrders'
@@ -83,9 +86,6 @@ export default {
     }
   },
   computed: {
-    orders: function() {
-      return this.$store.state.orders.data
-    },
     currentUser: function() {
       return this.$store.state.currentUser
     },
@@ -113,7 +113,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .order-table-wrapper {
-  padding-top: 80px;
   width: 80%;
   margin-left: 10%;
 }

@@ -3,8 +3,8 @@
     <table class="product-table">
       <thead>
         <tr>
-          <th>Product</th>
-          <th>Price</th>
+          <th>{{$t('products.product')}}</th>
+          <th>{{$t('products.price')}}</th>
           <th></th>
         </tr>
       </thead>
@@ -13,8 +13,8 @@
           <td>{{product.name}}</td>
           <td>{{product.price | formatCurrency}}</td>
           <td>
-            <button class="product-table__action-button" @click="editProduct(product.id)">Edit</button>
-            <button class="product-table__action-button" @click="deleteProduct(product.id)">Delete</button>
+            <button class="product-table__action-button" @click="editProduct(product.id)">{{$t('edit')}}</button>
+            <button class="product-table__action-button" @click="deleteProduct(product.id)">{{$t('delete')}}</button>
           </td>
         </tr>
       </tbody>
@@ -28,10 +28,8 @@ import axios from 'axios'
 
 export default {
   name: 'ProductsTable',
-  computed: {
-    products: function() {
-      return this.$store.state.products.data
-    }
+  props: {
+    products: Array
   },
   methods: {
     deleteProduct(id) {
@@ -56,7 +54,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .product-table-wrapper {
-  padding-top: 80px;
   width: 80%;
   margin-left: 10%;
 }

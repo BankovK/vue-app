@@ -4,7 +4,7 @@
       <h3 class="notification-card__notification">
         {{notification.title}}
         <span v-if="isUserAdmin" class="button-line">
-          <button type="button" @click="deleteNotification(notification)">Delete</button>
+          <button type="button" @click="deleteNotification(notification)">{{$t('delete')}}</button>
         </span>
       </h3>
       <div>{{notification.text}}</div>

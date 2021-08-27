@@ -49,10 +49,14 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
+.page-wrapper {
+  padding-top: 80px;
+}
 .hidden {
   display: none !important;
 }
-button {
+button, .button {
+  text-decoration: none;
   border: 4px solid black;
   background-color: black;
   color: white;

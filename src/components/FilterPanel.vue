@@ -1,9 +1,9 @@
 <template>
   <div class="form-wrapper">
-    <div v-if="loading">Loading...</div>
+    <div v-if="loading">{{$t('loading')}}</div>
     <form @submit.prevent="onSubmit" v-else class="form">
       <div>
-        <label htmlFor="product-name">Name</label>
+        <label htmlFor="product-name">{{$t('name')}}</label>
         <input
           v-model="name"
           id="product-name"
@@ -11,13 +11,12 @@
           autoComplete="off"
         />
       </div>
-      <div>
-        <label htmlFor="tags">Tags</label>
+      <div v-if="showTags">
+        <label htmlFor="tags">{{$t('tags')}}</label>
         <select multiple id="tags" v-model="tags">
           <option v-for="tag in availableTags" :value="tag.id" :key="tag.id">{{tag.name}}</option>
         </select>
       </div>
-      <button type="submit">Search</button>
     </form>
   </div>
 </template>
@@ -27,6 +26,9 @@ import axios from 'axios'
 
 export default {
   name: 'FilterPanel',
+  props: {
+    showTags: Boolean
+  },
   data() {
     return {
       name: '',
@@ -35,12 +37,19 @@ export default {
       loading: false
     }
   },
+  watch: {
+    'name': 'onSubmit',
+    'tags': 'onSubmit'
+  },
   methods: {
     onSubmit() {
       this.$emit('change-search-params', {name: this.name, tags: this.tags})
     },
   },
   created() {
+    if (!this.showTags) {
+      return
+    }
     this.loading = true
     axios.get(`http://localhost:5000/tags`)
       .then(({data}) => {
@@ -54,7 +63,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .form-wrapper {
-  padding-top: 80px;
   display: flex;
   justify-content: center;
 }

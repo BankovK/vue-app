@@ -1,10 +1,10 @@
 <template>
   <div class="form-wrapper" v-if="faqFormData" >
     <div>
-      <h1>Question Form</h1>
+      <h1>{{$t('faq.question_form')}}</h1>
       <form @submit.prevent="onSubmit">
         <div>
-          <label htmlFor="question">Question</label>
+          <label htmlFor="question">{{$t('faq.question')}}</label>
           <input
             v-model="faqFormData.question"
             id="question"
@@ -13,15 +13,15 @@
           />
         </div>
         <div>
-          <label htmlFor="answer">Answer</label>
+          <label htmlFor="answer">{{$t('faq.answer')}}</label>
           <textarea
             v-model="faqFormData.answer"
             id="answer"
           />
         </div>
         <div v-if="error">{{error}}</div>
-        <button type="button" @click="closeForm">Cancel</button>
-        <button type="submit">Submit</button>
+        <button type="button" @click="closeForm">{{$t('cancel')}}</button>
+        <button type="submit">{{$t('submit')}}</button>
       </form>
     </div>
   </div>
@@ -47,7 +47,7 @@ export default {
   methods: {
     onSubmit() {
       if (!this.faqFormData.question || !this.faqFormData.answer) {
-        this.error = 'Fill the fields'
+        this.error = this.$t('forms.fill_the_fields')
         return
       }
       const questionData = {
