@@ -1,5 +1,5 @@
 <template>
-  <div class="page-wrapper">
+  <div class="page-wrapper" :class="{shrinked: isCartOpen}">
     <FilterPanel @change-search-params="changeSearchParams" :showTags="true" />
     <ProductsList @open-product-details="openProductDetails" :products="products" />
     <ProductDetails @close-product-details="closeProductDetails" :productData="productDetailsData"/>
@@ -29,7 +29,10 @@ export default {
     products: function() {
       let checkTags = (arr, target) => target.every(v => arr.includes(v));
       return this.$store.state.products.data.filter(product => product.name.toLowerCase().includes(this.searchName.toLowerCase()) && checkTags(product.tags || [], this.searchTags))
-    }
+    },
+    isCartOpen: function() {
+      return this.$store.state.showCart
+    },
   },
   methods: {
     changeSearchParams({name, tags}) {
@@ -45,3 +48,10 @@ export default {
   }
 }
 </script>
+
+<style>
+  .shrinked {
+    width: 70%;
+    float: right;
+  }
+</style>

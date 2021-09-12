@@ -16,9 +16,18 @@ const store = new Vuex.Store({
       wasRequested: false
     },
     cart: [],
-    showCart: false
+    showCart: false,
+    productInTransfer: null
   },
   actions: {
+    addToCart: ({ commit, state }, payload) => {
+      const productIndex = state.cart.findIndex(_product => _product.id === payload.id)
+      if (productIndex !== -1) {
+        commit('increaseQuantity', productIndex)
+      } else {
+        commit('addToCart', payload)
+      }
+    },
     increaseQuantity: ({ commit }, payload) => {
       commit('increaseQuantity', payload)
     },
@@ -65,6 +74,9 @@ const store = new Vuex.Store({
     },
     addProduct: (state, product) => {
       state.products.data.push(product)
+    },
+    setProductInTransfer: (state, product) => {
+      state.productInTransfer = product
     },
     updateProduct: (state, product) => {
       const allProducts = [...state.products.data]

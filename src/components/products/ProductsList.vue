@@ -1,7 +1,7 @@
 <template>
   <div class="list-wrapper">
     <div class="products-wrapper">
-      <div class="product-card" v-for="product in products" :key="product.id">
+      <div class="product-card" v-for="product in products" :key="product.id" draggable @dragstart="setProductInTransfer(product)">
         <img class="product-card__image" :src="product.imageUrl" @click="openDetails(product)"/>
         <div>{{product.name}}</div>
         <div>{{product.price | formatCurrency}}</div>
@@ -12,14 +12,19 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'ProductsList',
   props: {
     products: Array
   },
   methods: {
-    addToCart(product) {
-      this.$store.commit('addToCart', product)
+    ...mapActions([
+      'addToCart'
+    ]),
+    setProductInTransfer(product) {
+      this.$store.commit('setProductInTransfer', product)
     },
     openDetails(product) {
       this.$emit('open-product-details', product)

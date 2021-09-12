@@ -1,5 +1,5 @@
 <template>
-  <div class="cart-wrapper" :class="{ hidden: !show }">
+  <div class="cart-wrapper" :class="{ hidden: !show }" @dragover="e => e.preventDefault()" @drop="e => onProductDrop(e)">
     <input
       v-model="orderToDate"
       id="orderToDate"
@@ -64,8 +64,16 @@ export default {
   methods: {
     ...mapActions([
       'increaseQuantity',
-      'decreaseQuantity'
+      'decreaseQuantity',
+      'addToCart'
     ]),
+    onProductDrop() {
+      if (!this.productInTransfer) {
+        return;
+      }
+      this.addToCart(this.productInTransfer)
+      this.$store.commit('setProductInTransfer', null)
+    },
     setOrderDate() {
       this.orderToDate = this.$route.query['order-time']
     },
@@ -108,7 +116,10 @@ export default {
     },
     currentUserId: function() {
       return this.$store.state.currentUser.id
-    }
+    },
+    productInTransfer: function() {
+      return this.$store.state.productInTransfer
+    },
   },
   watch: {
     "$route": 'setOrderDate'
