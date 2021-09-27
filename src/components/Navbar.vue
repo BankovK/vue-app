@@ -62,6 +62,7 @@ export default {
   overflow: hidden;
   background: black;
   padding: 10px;
+  z-index: 10;
 }
 
 .navbar-element {

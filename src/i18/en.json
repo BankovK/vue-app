@@ -31,6 +31,7 @@
       "new": "Create Product",
       "edit": "Edit Product"
     },
+    "details": "Details",
     "product": "Product",
     "price": "Price",
     "description": "Description",

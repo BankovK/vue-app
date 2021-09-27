@@ -1,7 +1,7 @@
 <template>
   <div class="page-wrapper" :class="{shrinked: isCartOpen}">
-    <FilterPanel @change-search-params="changeSearchParams" :showTags="true" />
-    <ProductsList @open-product-details="openProductDetails" :products="products" />
+    <FilterPanel @change-search-params="changeSearchParams" :showTags="true" :availableTags="tags" :loading="tagsLoading" :selectedTags="searchTags" />
+    <ProductsList @open-product-details="openProductDetails" @change-search-tag="setFilterTag" :products="products" :tags="tags" />
     <ProductDetails @close-product-details="closeProductDetails" :productData="productDetailsData"/>
   </div>
 </template>
@@ -10,6 +10,7 @@
 import FilterPanel from '../components/FilterPanel.vue'
 import ProductDetails from '../components/products/ProductDetails.vue'
 import ProductsList from '../components/products/ProductsList.vue'
+import axios from 'axios'
 
 export default {
   name: 'Products',
@@ -23,6 +24,8 @@ export default {
       productDetailsData: null,
       searchName: '',
       searchTags: [],
+      tags: [],
+      tagsLoading: false
     }
   },
   computed: {
@@ -39,12 +42,23 @@ export default {
       this.searchName = name
       this.searchTags = tags
     },
+    setFilterTag(tag) {
+      this.searchTags = [tag]
+    },
     openProductDetails(value) {
       this.productDetailsData = value
     },
     closeProductDetails() {
       this.productDetailsData = null
     }
+  },
+  created() {
+    this.tagsLoading = true
+    axios.get(`http://localhost:5000/tags`)
+      .then(({data}) => {
+        this.tags = data
+        this.tagsLoading = false
+      })
   }
 }
 </script>

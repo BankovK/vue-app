@@ -13,6 +13,7 @@
           <td>{{product.name}}</td>
           <td>{{product.price | formatCurrency}}</td>
           <td>
+            <button class="product-table__action-button" @click="openDetails(product)">{{$t('products.details')}}</button>
             <button class="product-table__action-button" @click="editProduct(product.id)">{{$t('edit')}}</button>
             <button class="product-table__action-button" @click="deleteProduct(product.id)">{{$t('delete')}}</button>
           </td>
@@ -38,6 +39,9 @@ export default {
     },
     editProduct(id) {
       this.$router.push(`product/${id}`);
+    },
+    openDetails(product) {
+      this.$emit('open-product-details', product)
     },
   },
   filters: {

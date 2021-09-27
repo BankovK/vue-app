@@ -22,40 +22,33 @@
 </template>
 
 <script>
-import axios from 'axios'
 
 export default {
   name: 'FilterPanel',
   props: {
-    showTags: Boolean
+    showTags: Boolean,
+    availableTags: Array,
+    loading: Boolean,
+    selectedTags: Array,
   },
   data() {
     return {
       name: '',
-      tags: [],
-      availableTags: [],
-      loading: false
+      tags: []
     }
   },
   watch: {
     'name': 'onSubmit',
-    'tags': 'onSubmit'
+    'tags': 'onSubmit',
+    'selectedTags': 'selectTags'
   },
   methods: {
     onSubmit() {
       this.$emit('change-search-params', {name: this.name, tags: this.tags})
     },
-  },
-  created() {
-    if (!this.showTags) {
-      return
+    selectTags() {
+      this.tags = this.selectedTags
     }
-    this.loading = true
-    axios.get(`http://localhost:5000/tags`)
-      .then(({data}) => {
-        this.availableTags = data
-        this.loading = false
-      })
   },
 }
 </script>
