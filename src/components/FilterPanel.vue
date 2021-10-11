@@ -1,23 +1,25 @@
 <template>
   <div class="form-wrapper">
     <div v-if="loading">{{$t('loading')}}</div>
-    <form @submit.prevent="onSubmit" v-else class="form">
-      <div>
-        <label htmlFor="product-name">{{$t('name')}}</label>
-        <input
-          v-model="name"
-          id="product-name"
-          type="text"
-          autoComplete="off"
-        />
-      </div>
+    <b-form @submit.prevent="onSubmit" v-else class="form">
+      <b-form-input
+        id="product-name"
+        v-model="name"
+        class="m-2 mr-sm-2 mb-sm-0"
+        :placeholder="$t('name')"
+      ></b-form-input>
+
       <div v-if="showTags">
-        <label htmlFor="tags">{{$t('tags')}}</label>
-        <select multiple id="tags" v-model="tags">
-          <option v-for="tag in availableTags" :value="tag.id" :key="tag.id">{{tag.name}}</option>
-        </select>
+        <label class="mr-sm-2" for="tags">{{$t('tags')}}</label>
+        <b-form-select
+          id="tags"
+          class="mb-2 mr-sm-2 mb-sm-0"
+          :options="tagOptions"
+          v-model="tags"
+          multiple
+        ></b-form-select>
       </div>
-    </form>
+    </b-form>
   </div>
 </template>
 
@@ -35,6 +37,11 @@ export default {
     return {
       name: '',
       tags: []
+    }
+  },
+  computed: {
+    tagOptions: function() {
+      return this.availableTags.map(tag => ({value: tag.id, text: tag.name}))
     }
   },
   watch: {

@@ -3,13 +3,16 @@ import App from './App.vue'
 import VueI18n from 'vue-i18n'
 import router from './router'
 import store from './store'
-import { BootstrapVueIcons } from 'bootstrap-vue'
+import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 import en from './i18/en.json'
 import ru from './i18/ru.json'
 
 
 Vue.use(VueI18n)
+Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 
 const messages = {

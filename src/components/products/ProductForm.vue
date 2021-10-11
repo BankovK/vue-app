@@ -3,41 +3,43 @@
     <div>
       <h1>{{this.isEdit ? $t('products.form_title.edit') : $t('products.form_title.new')}}</h1>
       <div v-if="loading">{{$t('loading')}}</div>
-      <form @submit.prevent="onSubmit" v-else>
-        <div>
-          <label htmlFor="product-name">{{$t('name')}}</label>
-          <input
-            v-model="name"
+      <b-form @submit.prevent="onSubmit" v-else>
+        <b-form-group id="product-name-group" :label="$t('name')" label-for="product-name">
+          <b-form-input
             id="product-name"
+            v-model="name"
             type="text"
-            autoComplete="off"
-          />
-        </div>
-        <div>
-          <label htmlFor="product-price">{{$t('products.price')}}</label>
-          <input
-            v-model="price"
+            required
+          ></b-form-input>
+        </b-form-group>
+        <b-form-group id="product-price-group" :label="$t('products.price')" label-for="product-price">
+          <b-form-input
             id="product-price"
+            v-model="price"
             type="number"
-          />
-        </div>
-        <div>
-          <label htmlFor="tags">{{$t('tags')}}</label>
-          <select multiple id="tags" v-model="tags">
-            <option v-for="tag in availableTags" :value="tag.id" :key="tag.id">{{tag.name}}</option>
-          </select>
-        </div>
-        <div>
-          <label htmlFor="description">{{$t('products.description')}}</label>
-          <textarea
-            v-model="description"
+            required
+          ></b-form-input>
+        </b-form-group>
+        <b-form-group id="tags-group" :label="$t('tags')" label-for="tags">
+          <b-form-select
+            id="tags"
+            class="mb-2 mr-sm-2 mb-sm-0"
+            :options="tagOptions"
+            v-model="tags"
+            multiple
+          ></b-form-select>
+        </b-form-group>
+        <b-form-group id="description-group" :label="$t('products.description')" label-for="description">
+          <b-form-input
             id="description"
+            v-model="description"
             type="text"
-          />
-        </div>
+            required
+          ></b-form-input>
+        </b-form-group>
         <div v-if="error">{{error}}</div>
-        <button type="submit" :disabled="!isFormFilled">{{this.isEdit ? $t('edit') : $t('submit')}}</button>
-      </form>
+        <b-button type="submit" :disabled="!isFormFilled">{{this.isEdit ? $t('edit') : $t('submit')}}</b-button>
+      </b-form>
     </div>
   </div>
 </template>
@@ -94,6 +96,9 @@ export default {
     isEdit: function() {
       return this.productId !== 'new'
     },
+    tagOptions: function() {
+      return this.availableTags.map(tag => ({value: tag.id, text: tag.name}))
+    }
   },
   mounted() {
     this.productId = this.$route.params.id

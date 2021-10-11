@@ -1,28 +1,20 @@
 <template>
   <div class="order-table-wrapper">
-    <table class="order-table">
-      <thead>
-        <tr>
-          <th>{{$t('name')}}</th>
-          <th>{{$t('created_at')}}</th>
-          <th>{{$t('users.role')}}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="user in users" :key="user.id">
-          <td>{{user.name}}</td>
-          <td>{{user.created | formatDateTime}}</td>
-          <td>
-            <select v-model="user.role" @change="(event) => changeRole(event, user.id)">
-              <option value='USER'>{{$t('users.roles.customer')}}</option>
-              <option value='ADMIN'>{{$t('users.roles.admin')}}</option>
-              <option value='DELIVERY'>{{$t('users.roles.delivery')}}</option>
-              <option value='SUPPORT'>{{$t('users.roles.support')}}</option>
-            </select>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <b-table small :fields="fields" :items="users">
+      <template #cell(created)="data">
+        {{data.value | formatDateTime}}
+      </template>
+      <template #cell(role)="data">
+        {{data.item.role}}
+        <b-form-select
+          id="role"
+          class="mb-2 mr-sm-2 mb-sm-0"
+          :options="roleOptions"
+          v-model="data.item.role"
+          @change="(value) => changeRole(value, data.item.id)"
+        ></b-form-select>
+      </template>
+    </b-table>
   </div>
 </template>
 
@@ -35,9 +27,35 @@ export default {
   props: {
     users: Array
   },
+  data() {
+    return {
+      fields: [
+        {
+          key: 'name',
+          label: this.$t('name'),
+          sortable: true
+        },
+        {
+          key: 'created',
+          label: this.$t('created_at'),
+          sortable: true
+        },
+        {
+          key: 'role',
+          label: this.$t('users.role'),
+          sortable: true
+        }
+      ],
+      roleOptions: [
+        {value: 'USER', text: this.$t('users.roles.customer')},
+        {value: 'ADMIN', text: this.$t('users.roles.admin')},
+        {value: 'DELIVERY', text: this.$t('users.roles.delivery')},
+        {value: 'SUPPORT', text: this.$t('users.roles.support')}
+      ]
+    }
+  },
   methods: {
-    changeRole(event, id) {
-      const { value } = event.target
+    changeRole(value, id) {
       axios.patch(`http://localhost:5000/users/${id}`, {
         role: value,
       })
@@ -56,40 +74,6 @@ export default {
 .order-table-wrapper {
   width: 80%;
   margin-left: 10%;
-}
-
-.order-table tbody {
-  display: block;
-  height: calc(100vh - 250px);
-  overflow-y: auto;
-}
-
-.order-table th {
-  background-color: burlywood;
-}
-
-.order-table tr {
-  display: flex;
-  text-align: center;
-  border-bottom: 1px solid;
-}
-
-.order-table td,
-.order-table th {
-  flex-basis: 100%;
-  flex-grow: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.order-table select {
-  font-size: 28px;
-}
-
-.order-table {
-  width: 100%;
-  font-size: 32px;
 }
 
 .order-table__action-button {

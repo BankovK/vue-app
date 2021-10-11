@@ -2,27 +2,25 @@
   <div class="form-wrapper" v-if="showNotificationForm" >
     <div>
       <h1>{{replyUserId ? $t('notifications.form_title.reply') : $t('notifications.form_title.new')}}</h1>
-      <form @submit.prevent="onSubmit">
-        <div>
-          <label htmlFor="title">{{$t('notifications.title')}}</label>
-          <input
-            v-model="title"
+      <b-form @submit.prevent="onSubmit">
+        <b-form-group id="title-group" :label="$t('notifications.title')" label-for="title">
+          <b-form-input
             id="title"
+            v-model="title"
             type="text"
-            autoComplete="off"
-          />
-        </div>
-        <div>
-          <label htmlFor="text">{{$t('notifications.text')}}</label>
-          <textarea
-            v-model="text"
+            required
+          ></b-form-input>
+        </b-form-group>
+        <b-form-group id="text-group" :label="$t('notifications.text')" label-for="text">
+          <b-form-textarea
             id="text"
-          />
-        </div>
+            v-model="text"
+          ></b-form-textarea>
+        </b-form-group>
         <div v-if="error">{{error}}</div>
-        <button type="button" @click="closeForm">{{$t('cancel')}}</button>
-        <button type="submit">{{$t('submit')}}</button>
-      </form>
+        <b-button type="button" @click="closeForm">{{$t('cancel')}}</b-button>
+        <b-button type="submit">{{$t('submit')}}</b-button>
+      </b-form>
     </div>
   </div>
 </template>

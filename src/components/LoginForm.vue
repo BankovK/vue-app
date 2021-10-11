@@ -1,27 +1,27 @@
 <template>
   <div class="form-wrapper">
     <h1>Log In</h1>
-    <form @submit.prevent="onSubmit">
-      <div>
-        <label htmlFor="username-register">{{$t('name')}}</label>
-        <input
-          v-model="name"
-          id="username-register"
-          type="text"
-          autoComplete="off"
-        />
-      </div>
-      <div>
-        <label htmlFor="password-register">{{$t('users.password')}}</label>
-        <input
-          v-model="password"
-          id="password-register"
-          type="password"
-        />
-      </div>
+    <b-form @submit.prevent="onSubmit">
+        <b-form-group id="username-register-group" :label="$t('name')" label-for="username-register">
+          <b-form-input
+            id="username-register"
+            v-model="name"
+            type="text"
+            autoComplete="off"
+            required
+          ></b-form-input>
+        </b-form-group>
+        <b-form-group id="password-register-group" :label="$t('users.password')" label-for="password-register">
+          <b-form-input
+            id="password-register"
+            v-model="password"
+            type="password"
+            required
+          ></b-form-input>
+        </b-form-group>
       <div v-if="error">{{error}}</div>
-      <button type="submit" :disabled="!isFormFilled">{{$t('users.sign_up')}}</button>
-    </form>
+      <b-button type="submit" variant="primary" :disabled="!isFormFilled">{{$t('users.sign_up')}}</b-button>
+    </b-form>
   </div>
 </template>
 

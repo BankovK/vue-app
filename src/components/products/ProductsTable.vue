@@ -1,25 +1,15 @@
 <template>
   <div class="product-table-wrapper">
-    <table class="product-table">
-      <thead>
-        <tr>
-          <th>{{$t('products.product')}}</th>
-          <th>{{$t('products.price')}}</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="product in products" :key="product.id">
-          <td>{{product.name}}</td>
-          <td>{{product.price | formatCurrency}}</td>
-          <td>
-            <button class="product-table__action-button" @click="openDetails(product)">{{$t('products.details')}}</button>
-            <button class="product-table__action-button" @click="editProduct(product.id)">{{$t('edit')}}</button>
-            <button class="product-table__action-button" @click="deleteProduct(product.id)">{{$t('delete')}}</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <b-table small :fields="fields" :items="products">
+      <template #cell(price)="data">
+        {{data.value | formatCurrency}}
+      </template>
+      <template #cell(actions)="data">
+        <b-button class="product-table__action-button" @click="openDetails(data.item)">{{$t('products.details')}}</b-button>
+        <b-button class="product-table__action-button" @click="editProduct(data.item.id)">{{$t('edit')}}</b-button>
+        <b-button class="product-table__action-button" @click="deleteProduct(data.item.id)">{{$t('delete')}}</b-button>
+      </template>
+    </b-table>
   </div>
 </template>
 
@@ -31,6 +21,27 @@ export default {
   name: 'ProductsTable',
   props: {
     products: Array
+  },
+  data() {
+    return {
+      fields: [
+        {
+          key: 'name',
+          label: this.$t('products.product'),
+          sortable: true
+        },
+        {
+          key: 'price',
+          label: this.$t('products.price'),
+          sortable: true
+        },
+        {
+          key: 'actions',
+          label: '',
+          sortable: false
+        }
+      ]
+    }
   },
   methods: {
     deleteProduct(id) {
@@ -62,40 +73,7 @@ export default {
   margin-left: 10%;
 }
 
-.product-table tbody {
-  display: block;
-  height: calc(100vh - 250px);
-  overflow-y: auto;
-}
-
-.product-table th {
-  background-color: burlywood;
-}
-
-.product-table tr {
-  display: flex;
-  text-align: center;
-  border-bottom: 1px solid;
-}
-
-.product-table td,
-.product-table th {
-  flex-basis: 100%;
-  flex-grow: 2;
-  display: flex;
-  justify-content: center;
-}
-
 .product-table__action-button {
   border-radius: 100px;
-}
-
-.product-table select {
-  font-size: 28px;
-}
-
-.product-table {
-  width: 100%;
-  font-size: 32px;
 }
 </style>

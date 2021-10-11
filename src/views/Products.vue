@@ -56,7 +56,7 @@ export default {
     this.tagsLoading = true
     axios.get(`http://localhost:5000/tags`)
       .then(({data}) => {
-        this.tags = data
+        this.tags = data.sort((a, b) => +b.priority - +a.priority)
         this.tagsLoading = false
       })
   }

@@ -2,35 +2,32 @@
   <div class="form-wrapper">
     <div>
       <h1>{{$t('messages.message_form_title')}}</h1>
-      <form @submit.prevent="onSubmit">
-        <div>
-          <label htmlFor="title">{{$t('messages.title')}}</label>
-          <input
-            v-model="title"
+      <b-form @submit.prevent="onSubmit">
+        <b-form-group id="title-group" :label="$t('messages.title')" label-for="title">
+          <b-form-input
             id="title"
+            v-model="title"
             type="text"
-            autoComplete="off"
-          />
-        </div>
-        <div>
-          <label htmlFor="type">{{$t('messages.type')}}</label>
-          <select id="type" v-model="type">
-            <option value='Bug report'>{{$t('messages.types.bug_report')}}</option>
-            <option value='Complaint'>{{$t('messages.types.complaint')}}</option>
-            <option value='Other'>{{$t('messages.types.other')}}</option>
-          </select>
-        </div>
-        <div>
-          <label htmlFor="description">{{$t('messages.description')}}</label>
-          <textarea
-            v-model="description"
+            required
+          ></b-form-input>
+        </b-form-group>
+        <b-form-group id="type-group" :label="$t('messages.type')" label-for="type">
+          <b-form-select
+            id="type"
+            class="mb-2 mr-sm-2 mb-sm-0"
+            :options="typeOptions"
+            v-model="type"
+          ></b-form-select>
+        </b-form-group>
+        <b-form-group id="description-group" :label="$t('messages.description')" label-for="description">
+          <b-form-textarea
             id="description"
-            type="text"
-          />
-        </div>
+            v-model="description"
+          ></b-form-textarea>
+        </b-form-group>
         <div v-if="error">{{error}}</div>
-        <button type="submit" :disabled="!isFormFilled">{{$t('messages.send')}}</button>
-      </form>
+        <b-button type="submit" :disabled="!isFormFilled">{{$t('messages.send')}}</b-button>
+      </b-form>
     </div>
   </div>
 </template>
@@ -71,6 +68,11 @@ export default {
       description: '',
       type: 'Bug report',
       error: '',
+      typeOptions: [
+        {text: this.$t('messages.types.bug_report'), value: 'Bug report'},
+        {text: this.$t('messages.types.complaint'), value: 'Complaint'},
+        {text: this.$t('messages.types.other'), value: 'Other'}
+      ]
     }
   },
   computed: {

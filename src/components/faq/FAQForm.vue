@@ -2,27 +2,25 @@
   <div class="form-wrapper" v-if="faqFormData" >
     <div>
       <h1>{{$t('faq.question_form')}}</h1>
-      <form @submit.prevent="onSubmit">
-        <div>
-          <label htmlFor="question">{{$t('faq.question')}}</label>
-          <input
-            v-model="faqFormData.question"
+      <b-form @submit.prevent="onSubmit">
+        <b-form-group id="question-group" :label="$t('faq.question')" label-for="question">
+          <b-form-input
             id="question"
+            v-model="faqFormData.question"
             type="text"
-            autoComplete="off"
-          />
-        </div>
-        <div>
-          <label htmlFor="answer">{{$t('faq.answer')}}</label>
-          <textarea
-            v-model="faqFormData.answer"
+            required
+          ></b-form-input>
+        </b-form-group>
+        <b-form-group id="answer-group" :label="$t('faq.answer')" label-for="answer">
+          <b-form-textarea
             id="answer"
-          />
-        </div>
+            v-model="faqFormData.answer"
+          ></b-form-textarea>
+        </b-form-group>
         <div v-if="error">{{error}}</div>
-        <button type="button" @click="closeForm">{{$t('cancel')}}</button>
-        <button type="submit">{{$t('submit')}}</button>
-      </form>
+        <b-button type="button" @click="closeForm">{{$t('cancel')}}</b-button>
+        <b-button type="submit">{{$t('submit')}}</b-button>
+      </b-form>
     </div>
   </div>
 </template>

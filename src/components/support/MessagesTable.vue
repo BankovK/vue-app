@@ -1,35 +1,24 @@
 <template>
   <div class="messages-table-wrapper">
-    <table class="messages-table">
-      <thead>
-        <tr>
-          <th>{{$t('messages.title')}}</th>
-          <th>{{$t('messages.type')}}</th>
-          <th>{{$t('created_at')}}</th>
-          <th>{{$t('messages.created_by')}}</th>
-          <th>{{$t('status')}}</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="message in messages" :key="message.id">
-          <td>{{message.title}}</td>
-          <td>{{message.type}}</td>
-          <td>{{message.created | formatDateTime}}</td>
-          <td>{{message.userName}}</td>
-          <td>
-            <select v-model="message.status" @change="(event) => changeStatus(event, message.id)" :disabled="!checkIfAllowedToChangeStatus(message)">
-              <option value='1'>{{$t('statuses.to_do')}}</option>
-              <option value='2'>{{$t('statuses.in_progress')}}</option>
-              <option value='3'>{{$t('statuses.resolved')}}</option>
-            </select>
-          </td>
-          <td>
-            <button class="messages-table__action-button" @click="replyToMessage(message)">{{$t('messages.reply')}}</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+
+    <b-table small :fields="fields" :items="messages">
+      <template #cell(created)="data">
+        {{data.value | formatDateTime}}
+      </template>
+      <template #cell(status)="data">
+        <b-form-select
+          id="status"
+          class="mb-2 mr-sm-2 mb-sm-0"
+          :options="statusOptions"
+          v-model="data.item.status"
+          @change="(value) => changeStatus(value, data.item.id)"
+          :disabled="!checkIfAllowedToChangeStatus(data.item)"
+        ></b-form-select>
+      </template>
+      <template #cell(actions)="data">
+        <b-button class="messages-table__action-button" @click="replyToMessage(data.item)">{{$t('messages.reply')}}</b-button>
+      </template>
+    </b-table>
   </div>
 </template>
 
@@ -41,6 +30,47 @@ export default {
   name: 'MessagesTable',
   props: {
     messages: Array
+  },
+  data() {
+    return {
+      fields: [
+        {
+          key: 'title',
+          label: this.$t('messages.title'),
+          sortable: true
+        },
+        {
+          key: 'type',
+          label: this.$t('messages.type'),
+          sortable: true
+        },
+        {
+          key: 'created',
+          label: this.$t('created_at'),
+          sortable: true
+        },
+        {
+          key: 'userName',
+          label: this.$t('messages.created_by'),
+          sortable: true
+        },
+        {
+          key: 'status',
+          label: this.$t('status'),
+          sortable: true
+        },
+        {
+          key: 'actions',
+          label: '',
+          sortable: false
+        }
+      ],
+      statusOptions: [
+        {value: '1', text: this.$t('statuses.to_do')},
+        {value: '2', text: this.$t('statuses.in_progress')},
+        {value: '3', text: this.$t('statuses.resolved')}
+      ]
+    }
   },
   methods: {
     changeStatus(event, id) {
@@ -75,40 +105,6 @@ export default {
 .messages-table-wrapper {
   width: 80%;
   margin-left: 10%;
-}
-
-.messages-table tbody {
-  display: block;
-  height: calc(100vh - 250px);
-  overflow-y: auto;
-}
-
-.messages-table th {
-  background-color: burlywood;
-}
-
-.messages-table tr {
-  display: flex;
-  text-align: center;
-  border-bottom: 1px solid;
-}
-
-.messages-table td,
-.messages-table th {
-  flex-basis: 100%;
-  flex-grow: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.messages-table select {
-  font-size: 28px;
-}
-
-.messages-table {
-  width: 100%;
-  font-size: 32px;
 }
 
 .messages-table__action-button {

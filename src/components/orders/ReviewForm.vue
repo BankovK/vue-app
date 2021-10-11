@@ -2,19 +2,18 @@
   <div class="form-wrapper" :class="{ hidden: !productId }">
     <div>
       <h1>{{$t('reviews.review_form_title')}}</h1>
-      <form @submit.prevent="onSubmit">
+      <b-form @submit.prevent="onSubmit">
         <b-icon v-for="value in [1,2,3,4,5]" :key="value" :icon="rating >= value ? 'star-fill' : 'star'" @click="setRating(value)"></b-icon>
-        <div>
-          <label htmlFor="comment">{{$t('reviews.comment')}}</label>
-          <textarea
-            v-model="comment"
+        <b-form-group id="comment-group" :label="$t('reviews.comment')" label-for="comment">
+          <b-form-textarea
             id="comment"
-          />
-        </div>
+            v-model="comment"
+          ></b-form-textarea>
+        </b-form-group>
         <div v-if="error">{{error}}</div>
-        <button type="button" @click="closeForm">{{$t('cancel')}}</button>
-        <button type="submit">{{$t('submit')}}</button>
-      </form>
+        <b-button type="button" @click="closeForm">{{$t('cancel')}}</b-button>
+        <b-button type="submit">{{$t('submit')}}</b-button>
+      </b-form>
     </div>
   </div>
 </template>

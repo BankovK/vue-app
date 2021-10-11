@@ -1,42 +1,38 @@
 <template>
   <div class="order-table-wrapper">
-    <table class="order-table">
-      <thead>
-        <tr>
-          <th>{{$t('orders.products')}}</th>
-          <th>{{$t('orders.order_time')}}</th>
-          <th>{{$t('orders.ordered_to_date')}}</th>
-          <th>{{$t('orders.total_price')}}</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="order in orders" :key="order.id">
-          <td>
-            <span v-for="product in order.products" :key="product.id">
-              {{`${product.name} (${product.quantity})`}} 
-              <button v-if="checkIfReviewable(order)" class="order-table__action-button" @click="openReview(product.id)">Review</button>
-            </span>
-          </td>
-          <td>{{order.orderTime | formatDateTime}}</td>
-          <td>{{order.orderToDate | formatDate}}</td>
-          <td>{{order.totalPrice | formatCurrency}}</td>
-          <td>
-            <div v-if="!isUserDelivery && checkIfEditable(order)" class="button-line">
-              <button class="order-table__action-button" @click="editOrder(order.id)">Edit</button>
-              <button class="order-table__action-button" @click="deleteOrder(order.id)">Delete</button>
-            </div>
-            <div v-if="isUserDelivery">
-              <select v-model="order.status" @change="(event) => changeStatus(event, order.id)" :disabled="!checkIfAllowedForDelivery(order)">
-                <option value='1'>{{$t('statuses.to_do')}}</option>
-                <option value='2'>{{$t('statuses.in_progress')}}</option>
-                <option value='3'>{{$t('statuses.delivered')}}</option>
-              </select>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <b-table small :fields="fields" :items="orders">
+      <template #cell(products)="data">
+        <span v-for="product in data.value" :key="product.id">
+          {{`${product.name} (${product.quantity})`}} 
+          <b-button v-if="checkIfReviewable(data.item)" class="order-table__action-button" @click="openReview(product.id)">Review</b-button>
+        </span>
+      </template>
+      <template #cell(orderTime)="data">
+        {{data.value | formatDateTime}}
+      </template>
+      <template #cell(orderToDate)="data">
+        {{data.value | formatDate}}
+      </template>
+      <template #cell(totalPrice)="data">
+        {{data.value | formatCurrency}}
+      </template>
+      <template #cell(actions)="data">
+        <div v-if="!isUserDelivery && checkIfEditable(data.item)" class="button-line">
+          <b-button class="order-table__action-button" @click="editOrder(data.item.id)">Edit</b-button>
+          <b-button class="order-table__action-button" @click="deleteOrder(data.item.id)">Delete</b-button>
+        </div>
+        <div v-if="isUserDelivery">
+          <b-form-select
+            id="status"
+            class="mb-2 mr-sm-2 mb-sm-0"
+            :options="statusOptions"
+            v-model="data.item.status"
+            @change="(value) => changeStatus(value, data.item.id)"
+            :disabled="!checkIfAllowedForDelivery(data.item)"
+          ></b-form-select>
+        </div>
+      </template>
+    </b-table>
   </div>
 </template>
 
@@ -49,6 +45,42 @@ export default {
   name: 'ProductsList',
   props: {
     orders: Array
+  },
+  data() {
+    return {
+      fields: [
+        {
+          key: 'products',
+          label: this.$t('orders.products'),
+          sortable: true
+        },
+        {
+          key: 'orderTime',
+          label: this.$t('orders.order_time'),
+          sortable: true
+        },
+        {
+          key: 'orderToDate',
+          label: this.$t('orders.ordered_to_date'),
+          sortable: true
+        },
+        {
+          key: 'totalPrice',
+          label: this.$t('orders.total_price'),
+          sortable: true
+        },
+        {
+          key: 'actions',
+          label: '',
+          sortable: false
+        }
+      ],
+      statusOptions: [
+        {value: '1', text: this.$t('statuses.to_do')},
+        {value: '2', text: this.$t('statuses.in_progress')},
+        {value: '3', text: this.$t('statuses.delivered')}
+      ]
+    }
   },
   methods: {
     ...mapActions([
@@ -115,40 +147,6 @@ export default {
 .order-table-wrapper {
   width: 80%;
   margin-left: 10%;
-}
-
-.order-table tbody {
-  display: block;
-  height: calc(100vh - 250px);
-  overflow-y: auto;
-}
-
-.order-table th {
-  background-color: burlywood;
-}
-
-.order-table tr {
-  display: flex;
-  text-align: center;
-  border-bottom: 1px solid;
-}
-
-.order-table td,
-.order-table th {
-  flex-basis: 100%;
-  flex-grow: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.order-table select {
-  font-size: 28px;
-}
-
-.order-table {
-  width: 100%;
-  font-size: 32px;
 }
 
 .order-table__action-button {

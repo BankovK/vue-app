@@ -2,28 +2,27 @@
   <div class="form-wrapper" v-if="tagFormData" >
     <div>
       <h1>{{$t('tags_admin.tag_form_title')}}</h1>
-      <form @submit.prevent="onSubmit">
-        <div>
-          <label htmlFor="name">{{$t('name')}}</label>
-          <input
-            v-model="tagFormData.name"
+      <b-form @submit.prevent="onSubmit">
+        <b-form-group id="name-group" :label="$t('name')" label-for="name">
+          <b-form-input
             id="name"
+            v-model="tagFormData.name"
             type="text"
-            autoComplete="off"
-          />
-        </div>
-        <div>
-          <label htmlFor="priority">{{$t('tags_admin.priority')}}</label>
-          <input
-            v-model="tagFormData.priority"
+            required
+          ></b-form-input>
+        </b-form-group>
+        <b-form-group id="priority-group" :label="$t('tags_admin.priority')" label-for="priority">
+          <b-form-input
             id="priority"
+            v-model="tagFormData.priority"
             type="number"
-          />
-        </div>
+            required
+          ></b-form-input>
+        </b-form-group>
         <div v-if="error">{{error}}</div>
-        <button type="button" @click="closeForm">{{$t('cancel')}}</button>
-        <button type="submit">{{$t('submit')}}</button>
-      </form>
+        <b-button type="button" @click="closeForm">{{$t('cancel')}}</b-button>
+        <b-button type="submit">{{$t('submit')}}</b-button>
+      </b-form>
     </div>
   </div>
 </template>
