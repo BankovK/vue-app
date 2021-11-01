@@ -14,6 +14,7 @@
 
 <script>
 import axios from 'axios'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'NotificationsList',
@@ -21,9 +22,15 @@ export default {
     notifications: Array
   },
   methods: {
+    ...mapActions([
+      'setSnackbarMessage'
+    ]),
     deleteNotification(notification) {
       axios.delete(`http://localhost:5000/notifications/${notification.id}`)
-        .then(() => this.$emit('delete-notification', notification.id))
+        .then(() => {
+          this.setSnackbarMessage(this.$t('notifications.notification_deleted'))
+          this.$emit('delete-notification', notification.id)
+        })
     },
   },
   computed: {

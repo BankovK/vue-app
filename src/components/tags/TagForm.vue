@@ -29,6 +29,7 @@
 
 <script>
 import axios from 'axios';
+import { mapActions } from 'vuex'
 
 export default {
   name: 'TagForm',
@@ -45,6 +46,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'setSnackbarMessage'
+    ]),
     onSubmit() {
       if (!this.tagFormData.name || !this.tagFormData.priority) {
         this.error = this.$t('forms.fill_the_fields')
@@ -60,6 +64,7 @@ export default {
           .then(({data}) => {
             this.$emit('update-tag', data)
             this.closeForm()
+            this.setSnackbarMessage(this.$t('tags_admin.tag_editted'))
           })
       } else {
         if (this.tagNames.includes(this.tagFormData.name)) {
@@ -70,6 +75,7 @@ export default {
           .then(({data}) => {
             this.$emit('add-tag', data)
             this.closeForm()
+            this.setSnackbarMessage(this.$t('tags_admin.tag_added'))
           })
       }
     },

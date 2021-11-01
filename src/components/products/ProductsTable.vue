@@ -15,7 +15,8 @@
 
 <script>
 import moment from 'moment';
-import axios from 'axios'
+import axios from 'axios';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'ProductsTable',
@@ -44,9 +45,15 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'setSnackbarMessage'
+    ]),
     deleteProduct(id) {
       axios.delete(`http://localhost:5000/products/${id}`)
-        .then(() => this.$store.commit('deleteProduct', id))
+        .then(() => {
+          this.setSnackbarMessage(this.$t('products.product_deleted'))
+          this.$store.commit('deleteProduct', id)
+        })
     },
     editProduct(id) {
       this.$router.push(`product/${id}`);

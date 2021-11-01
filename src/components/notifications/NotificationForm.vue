@@ -28,6 +28,7 @@
 <script>
 import moment from 'moment';
 import axios from 'axios';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'NotificationForm',
@@ -43,6 +44,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'setSnackbarMessage'
+    ]),
     onSubmit() {
       if (!this.title || !this.text) {
         this.error = this.$t('forms.fill_the_fields')
@@ -62,6 +66,7 @@ export default {
           this.title = ''
           this.text = ''
           this.error = ''
+          this.setSnackbarMessage(this.$t('notifications.notification_created'))
           this.$emit('add-notification', data)
           this.closeForm()
         })

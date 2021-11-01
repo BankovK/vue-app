@@ -1,6 +1,6 @@
 <template>
   <div class="form-wrapper">
-    <h1>Log In</h1>
+    <h1>{{this.isRegister ? $t('register') : $t('login')}}</h1>
     <b-form @submit.prevent="onSubmit">
         <b-form-group id="username-register-group" :label="$t('name')" label-for="username-register">
           <b-form-input
@@ -19,8 +19,17 @@
             required
           ></b-form-input>
         </b-form-group>
+        <b-form-group v-if="this.isRegister" id="password-repeat-group" :label="$t('users.repeat_password')" label-for="password-repeat">
+          <b-form-input
+            id="password-repeat"
+            v-model="passwordRepeat"
+            type="password"
+            required
+          ></b-form-input>
+        </b-form-group>
       <div v-if="error">{{error}}</div>
-      <b-button type="submit" variant="primary" :disabled="!isFormFilled">{{$t('users.sign_up')}}</b-button>
+      <b-button type="button" variant="secondary" @click="toggleMode">{{this.isRegister ? $t('login') : $t('register')}}</b-button>
+      <b-button type="submit" variant="primary" :disabled="!isFormFilled">{{this.isRegister ? $t('register') : $t('users.sign_up')}}</b-button>
     </b-form>
   </div>
 </template>
@@ -28,14 +37,38 @@
 <script>
 import { mapActions } from 'vuex'
 import axios from 'axios'
+import moment from 'moment'
 
 export default {
   name: 'LoginForm',
   methods: {
     ...mapActions([
-      'fetchProducts'
+      'fetchProducts',
+      'setSnackbarMessage'
     ]),
     onSubmit() {
+      if (this.isRegister) {
+        if (this.password !== this.passwordRepeat) {
+          this.error = this.$t('forms.passwords_do_not_match')
+          return
+        }
+        if (this.users.find(_user => _user.name === this.name)) {
+          this.error = this.$t('forms.name_exists')
+          return
+        }
+        axios.post("http://localhost:5000/users", {
+          name: this.name,
+          password: this.password,
+          role: 'USER',
+          created: moment().toISOString()
+        })
+          .then(() => {
+            this.setSnackbarMessage(this.$t('users.user_added'))
+            this.isRegister = false;
+          })
+        return
+      }
+
       axios.get("http://localhost:5000/users", {
         params: {
           name: this.name,
@@ -53,20 +86,32 @@ export default {
             this.error = 'Wrong credentials'
           }
         })
+    },
+    toggleMode() {
+      this.isRegister = !this.isRegister
     }
   },
   data() {
     return {
       name: '',
       password: '',
+      passwordRepeat: '',
       error: '',
+      isRegister: false,
+      users: []
     }
   },
   computed: {
     isFormFilled: function() {
       return this.name.length !== 0 && this.password.length !== 0
     }
-  }
+  },
+  mounted() {
+    axios.get(`http://localhost:5000/users`)
+      .then(({data}) => {
+        this.users = data
+      })
+  },
 }
 </script>
 

@@ -15,6 +15,7 @@
 
 <script>
 import axios from 'axios'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'FAQList',
@@ -22,12 +23,18 @@ export default {
     questions: Array
   },
   methods: {
+    ...mapActions([
+      'setSnackbarMessage'
+    ]),
     editQuestion(question) {
       this.$emit('open-faq-form', question)
     },
     deleteQuestion(question) {
       axios.delete(`http://localhost:5000/questions/${question.id}`)
-        .then(() => this.$emit('delete-question', question.id))
+        .then(() => {
+          this.setSnackbarMessage(this.$t('faq.faq_deleted'))
+          this.$emit('delete-question', question.id)
+        })
     },
   },
   computed: {

@@ -16,6 +16,7 @@ const store = new Vuex.Store({
       wasRequested: false
     },
     cart: [],
+    snackbarMessage: null,
     showCart: false,
     productInTransfer: null
   },
@@ -57,6 +58,12 @@ const store = new Vuex.Store({
         commit('setOrders', data)
       }
       fetchProducts()
+    },
+    setSnackbarMessage: ({ commit }, payload) => {
+      commit('setSnackbarMessage', payload)
+    },
+    clearSnackbar: ({ commit }) => {
+      commit('clearSnackbar')
     }
   },
   mutations: {
@@ -101,6 +108,12 @@ const store = new Vuex.Store({
       const cart = [...state.cart]
       cart[index].quantity--
       state.cart = cart
+    },
+    setSnackbarMessage: (state, message) => {
+      state.snackbarMessage = message
+    },
+    clearSnackbar: (state) => {
+      state.snackbarMessage = null
     },
     removeFromCart: (state, index) => {
       state.cart.splice(index, 1);

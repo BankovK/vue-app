@@ -65,7 +65,8 @@ export default {
     ...mapActions([
       'increaseQuantity',
       'decreaseQuantity',
-      'addToCart'
+      'addToCart',
+      'setSnackbarMessage'
     ]),
     onProductDrop() {
       if (!this.productInTransfer) {
@@ -90,14 +91,18 @@ export default {
         axios.patch(`http://localhost:5000/orders/${orderId}`, orderData)
           .then(({data}) => {
             this.$store.commit('editOrder', data)
-            this.$router.push('/products');
+            this.$router.push('/products')
+            this.setSnackbarMessage(this.$t('orders.order_changed'))
           })
       } else {
         axios.post("http://localhost:5000/orders", {
           ...orderData,
           orderTime: moment().toISOString()
         })
-          .then(({data}) => this.$store.commit('makeOrder', data))
+          .then(({data}) => {
+            this.$store.commit('makeOrder', data)
+            this.setSnackbarMessage(this.$t('orders.order_created'))
+          })
       }
     },
     getCurrentDate() {

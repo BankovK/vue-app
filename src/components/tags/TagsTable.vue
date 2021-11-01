@@ -11,6 +11,7 @@
 
 <script>
 import axios from 'axios'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'TagsTable',
@@ -39,9 +40,15 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'setSnackbarMessage'
+    ]),
     deleteTag(id) {
       axios.delete(`http://localhost:5000/tags/${id}`)
-        .then(() => this.$emit('delete-tag', id))
+        .then(() => {
+          this.setSnackbarMessage(this.$t('tags_admin.tag_deleted'))
+          this.$emit('delete-tag', id)
+        })
     },
     editTag(tag) {
       this.$emit('open-tag-form', tag)

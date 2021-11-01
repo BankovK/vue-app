@@ -20,7 +20,8 @@
 
 <script>
 import moment from 'moment';
-import axios from 'axios'
+import axios from 'axios';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'UsersTable',
@@ -55,9 +56,14 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'setSnackbarMessage'
+    ]),
     changeRole(value, id) {
       axios.patch(`http://localhost:5000/users/${id}`, {
         role: value,
+      }).then(() => {
+        this.setSnackbarMessage(this.$t('users.user_role_changed'))
       })
     }
   },

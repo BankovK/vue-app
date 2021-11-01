@@ -1,6 +1,6 @@
 <template>
   <div class="form-wrapper" :class="{ hidden: !showUserForm }">
-    <h1>Register</h1>
+    <h1>{{$t('register')}}</h1>
     <b-form @submit.prevent="onSubmit">
       <b-form-group id="username-register-group" :label="$t('name')" label-for="username-register">
         <b-form-input
@@ -50,15 +50,21 @@ import axios from 'axios'
 export default {
   name: 'UserForm',
   props: {
-    showUserForm: Boolean
+    showUserForm: Boolean,
+    users: Array
   },
   methods: {
     ...mapActions([
-      'fetchProducts'
+      'fetchProducts',
+      'setSnackbarMessage'
     ]),
     onSubmit() {
       if (!this.name || !this.password) {
         this.error = this.$t('forms.fill_the_fields')
+        return
+      }
+      if (this.users.find(_user => _user.name === this.name)) {
+        this.error = this.$t('forms.name_exists')
         return
       }
       if (this.password !== this.passwordRepeat) {
@@ -72,7 +78,7 @@ export default {
         created: moment().toISOString()
       })
         .then(({data}) => {
-
+          this.setSnackbarMessage(this.$t('users.user_added'))
           this.$emit('add-user', data)
           this.closeForm()
         })

@@ -33,12 +33,16 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
 import moment from 'moment';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'MessageForm',
   methods: {
+    ...mapActions([
+      'setSnackbarMessage'
+    ]),
     onSubmit() {
       if (this.isFormFilled) {
         const messageData = {
@@ -56,6 +60,7 @@ export default {
             this.description = ''
             this.type = '1'
             this.error = ''
+            this.setSnackbarMessage(this.$t('messages.message_sent'))
           })
       } else {
         this.error = this.$t('forms.fill_the_fields')

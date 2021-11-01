@@ -2,7 +2,10 @@
   "faq": {
     "question_form": "Вопрос",
     "question": "Вопрос",
-    "answer": "Ответ"
+    "answer": "Ответ",
+    "faq_added": "FAQ добавлен",
+    "faq_editted": "FAQ изменён",
+    "faq_deleted": "FAQ удалён"
   },
   "notifications": {
     "form_title": {
@@ -10,13 +13,19 @@
       "reply": "Ответ"
     },
     "title": "Заглавие",
-    "text": "Текст"
+    "text": "Текст",
+    "notification_created": "Уведомление создано",
+    "notification_deleted": "Уведомление удалено"
   },
   "orders": {
     "products": "Товар",
     "order_time": "Время создания",
     "ordered_to_date": "Заказан на",
-    "total_price": "Полная цена"
+    "total_price": "Полная цена",
+    "order_changed": "Заказ изменён",
+    "order_created": "Заказ создан",
+    "order_deleted": "Заказ удалён",
+    "status_changed": "Статус изменён"
   },
   "reviews": {
     "review_form_title": "Отзыв",
@@ -24,7 +33,8 @@
     "rating": "Рейтинг",
     "comment": "Комментарий",
     "average_rating": "Средний рейтинг",
-    "date": "Дата"
+    "date": "Дата",
+    "review_created": "Отзыв сохранён"
   },
   "products": {
     "form_title": {
@@ -35,7 +45,10 @@
     "product": "Товар",
     "price": "Цена",
     "description": "Описание",
-    "order": "Заказать"
+    "order": "Заказать",
+    "product_created": "Товар создан",
+    "product_editted": "Товар изменён",
+    "product_deleted": "Товар удалён"
   },
   "messages": {
     "message_form_title": "Отправить сообщение",
@@ -49,11 +62,16 @@
     "description": "Описание",
     "send": "Отправить",
     "created_by": "Имя автора",
-    "reply": "Ответить"
+    "reply": "Ответить",
+    "status_changed": "Статус изменён",
+    "message_sent": "Сообщение отослано"
   },
   "tags_admin": {
     "tag_form_title": "Тег",
-    "priority": "Приоритет"
+    "priority": "Приоритет",
+    "tag_added": "Тег создан",
+    "tag_editted": "Тег изменён",
+    "tag_deleted": "Тег удалён"
   },
   "users": {
     "user_form_title": "Добавить пользователя",
@@ -66,7 +84,9 @@
       "delivery": "Доставка",
       "support": "Поддержка"
     },
-    "sign_up": "Войти"
+    "sign_up": "Войти",
+    "user_added": "Пользователь создан",
+    "user_role_changed": "Роль изменена"
   },
   "cart": {
     "amount": "Кол-во",
@@ -93,7 +113,7 @@
   },
   "status": "Статус",
   "statuses": {
-    "to_do:": "Ожидание",
+    "to_do": "Ожидание",
     "in_progress": "В процессе",
     "delivered": "Доставлен",
     "resolved": "Выполнен"
@@ -107,5 +127,7 @@
   "created_at": "Создано в",
   "name": "Имя",
   "tags": "Теги",
-  "export": "Экспорт"
+  "export": "Экспорт",
+  "login": "Вход",
+  "register": "Регистрация"
 }

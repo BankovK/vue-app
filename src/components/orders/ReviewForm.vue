@@ -23,6 +23,7 @@ import moment from 'moment';
 import axios from 'axios';
 import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
 import { BIcon } from 'bootstrap-vue'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'ReviewForm',
@@ -40,6 +41,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'setSnackbarMessage'
+    ]),
     onSubmit() {
       const reviewData = {
         productId: this.productId,
@@ -51,8 +55,10 @@ export default {
       axios.post("http://localhost:5000/reviews", {
         ...reviewData,
         creationTime: moment().toISOString()
+      }).then(() => {
+        this.setSnackbarMessage(this.$t('reviews.review_created'))
+        this.$emit('close-review-form')
       })
-        .then(() => this.$emit('close-review-form'))
     },
     setRating(value) {
       this.rating = value

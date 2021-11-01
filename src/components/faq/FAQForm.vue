@@ -28,6 +28,7 @@
 <script>
 import moment from 'moment';
 import axios from 'axios';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'FAQForm',
@@ -43,6 +44,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'setSnackbarMessage'
+    ]),
     onSubmit() {
       if (!this.faqFormData.question || !this.faqFormData.answer) {
         this.error = this.$t('forms.fill_the_fields')
@@ -56,6 +60,7 @@ export default {
         questionData.id = this.faqFormData.id
         axios.patch(`http://localhost:5000/questions/${this.faqFormData.id}`, questionData)
           .then(({data}) => {
+            this.setSnackbarMessage(this.$t('faq.faq_editted'))
             this.$emit('update-question', data)
             this.closeForm()
           })
@@ -63,6 +68,7 @@ export default {
         questionData.creationTime = moment().toISOString()
         axios.post("http://localhost:5000/questions", questionData)
           .then(({data}) => {
+            this.setSnackbarMessage(this.$t('faq.faq_added'))
             this.$emit('add-question', data)
             this.closeForm()
           })

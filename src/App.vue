@@ -6,6 +6,9 @@
     <div v-else>
       <Navbar />
       <Cart />
+      <div class="snackbar" v-if="snackbarMessage" @click="clearSnackbar">
+        {{snackbarMessage}}
+      </div>
       <router-view/>
     </div>
   </div>
@@ -26,12 +29,16 @@ export default {
   },
   methods: {
     ...mapActions([
-      'fetchProducts'
+      'fetchProducts',
+      'clearSnackbar'
     ]),
   },
   computed: {
     notLoggedIn: function() {
       return !this.$store.state.currentUser
+    },
+    snackbarMessage: function() {
+      return this.$store.state.snackbarMessage
     }
   },
   created() {
@@ -70,6 +77,18 @@ button:hover {
 }
 .button-line {
   display: flex;
+}
+.snackbar {
+  position: fixed;
+  bottom: 10px;
+  left: 20px;
+  z-index: 10;
+
+  border: 5px solid black;
+  border-radius: 50px;
+  background-color: green;
+  color: white;
+  padding: 10px;
 }
 * {
   margin: 0;

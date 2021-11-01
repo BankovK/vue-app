@@ -24,7 +24,8 @@
 
 <script>
 import moment from 'moment';
-import axios from 'axios'
+import axios from 'axios';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'MessagesTable',
@@ -73,11 +74,16 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'setSnackbarMessage'
+    ]),
     changeStatus(event, id) {
       const { value } = event.target
       axios.patch(`http://localhost:5000/contact/${id}`, {
         status: +value,
         lockedByUserId: value !== "1" ? this.currentUser.id : 0
+      }).then(() => {
+        this.setSnackbarMessage(this.$t('messages.status_changed'))
       })
     },
     checkIfAllowedToChangeStatus(message) {

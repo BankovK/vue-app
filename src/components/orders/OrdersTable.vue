@@ -84,11 +84,15 @@ export default {
   },
   methods: {
     ...mapActions([
-      'fetchOrders'
+      'fetchOrders',
+      'setSnackbarMessage'
     ]),
     deleteOrder(id) {
       axios.delete(`http://localhost:5000/orders/${id}`)
-        .then(() => this.$store.commit('deleteOrder', id))
+        .then(() => {
+          this.setSnackbarMessage(this.$t('orders.order_deleted'))
+          this.$store.commit('deleteOrder', id)
+        })
     },
     editOrder(id) {
       axios.get(`http://localhost:5000/orders/${id}`)
@@ -102,6 +106,8 @@ export default {
       axios.patch(`http://localhost:5000/orders/${id}`, {
         status: +value,
         deliveryUserId: value !== "1" ? this.$store.state.currentUser.id : 0
+      }).then(() => {
+        this.setSnackbarMessage(this.$t('orders.status_changed'))
       })
     },
     checkIfAllowedForDelivery(order) {

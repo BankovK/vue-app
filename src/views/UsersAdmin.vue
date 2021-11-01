@@ -2,7 +2,7 @@
   <div class="page-wrapper">
     <FilterPanel @change-search-params="changeSearchParams" />
     <UsersTable :users="filteredUsers"/>
-    <UserForm :showUserForm="showUserForm" @close-user-form="closeUserForm" @add-user="addUser" />
+    <UserForm :users="users" :showUserForm="showUserForm" @close-user-form="closeUserForm" @add-user="addUser" />
     <button @click="openUserForm">Add</button>
     <ExportButton @on-export="onExport" :exportData="exportData" />
   </div>

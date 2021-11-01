@@ -46,10 +46,14 @@
 
 <script>
 import axios from 'axios'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'ProductForm',
   methods: {
+    ...mapActions([
+      'setSnackbarMessage'
+    ]),
     onSubmit() {
       if (this.isFormFilled) {
         const productData = {
@@ -63,13 +67,15 @@ export default {
           axios.post("http://localhost:5000/products", productData)
             .then(({data}) => {
               this.$store.commit('addProduct', data)
-              this.$router.push('/products');
+              this.setSnackbarMessage(this.$t('products.product_created'))
+              this.$router.push('/products')
             })
         } else {
           axios.put(`http://localhost:5000/products/${this.productId}`, productData)
             .then(({data}) => {
               this.$store.commit('updateProduct', data)
-              this.$router.push('/products');
+              this.setSnackbarMessage(this.$t('products.product_editted'))
+              this.$router.push('/products')
             })
           }
       } else {
